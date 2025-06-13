@@ -15,8 +15,18 @@
     <link href="{{ asset('src/assets/extra-libs/c3/c3.min.css') }}" rel="stylesheet">
     <link href="{{ asset('src/assets/libs/chartist/dist/chartist.min.css') }}" rel="stylesheet">
     <link href="{{ asset('src/assets/extra-libs/jvector/jquery-jvectormap-2.0.2.css') }}" rel="stylesheet" />
+
+    <link rel="stylesheet" href="{{ asset('src/assets/extra-libs/datatables.net-bs4/css/dataTables.bootstrap4.css') }}">
+    <link rel="stylesheet" href="{{ asset('src/assets/extra-libs/datatables.net-bs4/css/responsive.dataTables.min.css') }}">
     <!-- Custom CSS -->
     <link href="{{ asset('src/dist/css/style.min.css') }}" rel="stylesheet">
+
+    <style>
+        th.sorting_disabled::after,
+        th.sorting_disabled::before {
+        display: none !important;
+        }
+    </style>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -57,6 +67,23 @@
         <!-- Page wrapper  -->
         <!-- ============================================================== -->
         <div class="page-wrapper">
+            <div class="page-breadcrumb">
+                <div class="row">
+                        <div class="col-7 align-self-center">
+                            @yield('title')
+                            @yield('breadcrumb')
+                        </div>
+                        <!-- <div class="col-5 align-self-center mb-2">
+                            <div class="customize-input float-end">
+                                <select class="custom-select custom-select-set form-control bg-white border-0 custom-shadow custom-radius">
+                                    <option selected>Aug 23</option>
+                                    <option value="1">July 23</option>
+                                    <option value="2">Jun 23</option>
+                                </select>
+                            </div>
+                        </div> -->
+                </div>
+            </div>
             <!-- ============================================================== -->
             <!-- Bread crumb and right sidebar toggle -->
             @yield('content')
@@ -88,10 +115,14 @@
     <script src="{{ asset('src/assets/libs/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('src/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
     <!-- apps -->
-    <!-- apps -->
     <script src="{{ asset('src/dist/js/app-style-switcher.js') }}"></script>
     <script src="{{ asset('src/dist/js/feather.min.js') }}"></script>
     <script src="{{ asset('src/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js') }}"></script>
+    <script src="{{ asset('src/dist/js/sidebarmenu.js') }}"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="{{ asset('src/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js') }}"></script>
+    <script src="{{ asset('src/assets/extra-libs/sparkline/sparkline.js') }}"></script>
+    <!--Menu sidebar -->
     <script src="{{ asset('src/dist/js/sidebarmenu.js') }}"></script>
     <!--Custom JavaScript -->
     <script src="{{ asset('src/dist/js/custom.min.js') }}"></script>
@@ -103,6 +134,9 @@
     <script src="{{ asset('src/assets/extra-libs/jvector/jquery-jvectormap-2.0.2.min.js') }}"></script>
     <script src="{{ asset('src/assets/extra-libs/jvector/jquery-jvectormap-world-mill-en.js') }}"></script>
     <script src="{{ asset('src/dist/js/pages/dashboards/dashboard1.min.js') }}"></script>
+    <script src="{{ asset('src/assets/extra-libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('src/assets/extra-libs/datatables.net-bs4/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('src/dist/js/pages/datatable/datatable-basic.init.js') }}"></script>
 </body>
 
 </html>

@@ -19,9 +19,9 @@ return new class extends Migration
 
             $table->string('kode')->unique(); // Kode produk harus unik
             $table->string('nama'); // Nama produk
-            $table->decimal('harga_beli', 15, 2); // Harga beli
-            $table->decimal('harga_jual', 15, 2); // Harga jual
-            $table->decimal('diskon', 5, 2)->default(0); // Diskon dalam persen (misal 10.00%)
+            $table->integer('harga_beli')->default(0); // Harga beli
+            $table->integer('harga_jual')->default(0); // Harga jual
+            $table->integer('diskon')->default(0); // Diskon dalam persen (misal 10.00%)
             $table->integer('stok')->default(0); // Jumlah stok
             $table->timestamps(); // Kolom created_at dan updated_at
         });
