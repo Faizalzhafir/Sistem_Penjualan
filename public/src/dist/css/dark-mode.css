@@ -1,0 +1,110 @@
+/* === Dark Mode Theme Override - Gaya Modernize === */
+
+body.dark-mode {
+    background-color: #232B35; /* Latar biru sangat gelap */
+    color: #e5eaf2;
+  }
+  
+  body.dark-mode .sidebar,
+  body.dark-mode .scroll-sidebar,
+  body.dark-mode .sidebar-nav,
+  body.dark-mode .left-sidebar {
+    background-color: #232B35; /* Sidebar lebih gelap, biru kehitaman */
+  }
+
+  body.dark-mode .page-wrapper {
+    background-color: #232B35;
+  }
+  
+  body.dark-mode .topbar,
+  body.dark-mode .navbar {
+    background-color: #232B35; /* Navbar agak terang dari body */
+    border-bottom: 1px solid #1f2b55;
+  }
+  
+  body.dark-mode .card {
+    background-color: #232B35;
+    border-color: #1f2b55;
+    color: #e5eaf2;
+  }
+  
+  body.dark-mode .table {
+    background-color: #232B35;
+    color: #e5eaf2;
+  }
+  
+  body.dark-mode .table thead {
+    background-color: #1b2a59;
+  }
+  
+  body.dark-mode a {
+    color: #76c1ff; /* Biru terang untuk link */
+  }
+  
+  body.dark-mode .btn {
+    color: #ffffff;
+    background-color: #1f2b55;
+    border-color: #324372;
+  }
+  
+  body.dark-mode .breadcrumb {
+    background-color: transparent;
+    color: #b0b8d2;
+  }
+  
+  body.dark-mode .page-title {
+    color: #ffffff;
+  }
+  
+  body.dark-mode .dataTables_wrapper {
+    color: #e5eaf2;
+  }
+  
+  body.dark-mode .dataTables_wrapper .dataTables_length select,
+  body.dark-mode .dataTables_wrapper .dataTables_filter input,
+  body.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button {
+    background-color: #1a2550;
+    color: #e5eaf2;
+    border: 1px solid #2a355f;
+  }
+  
+  body.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background-color: #2a3a70 !important;
+    border-color: #3f4e82 !important;
+  }
+  
+  body.dark-mode .dataTables_wrapper .dataTables_filter label,
+  body.dark-mode .dataTables_wrapper .dataTables_length label {
+    color: #c0c8e0;
+  }
+  
+  body.dark-mode table.dataTable {
+    background-color: #232B35;
+    color: #e5eaf2;
+  }
+  
+  body.dark-mode table.dataTable thead th {
+    background-color: #1b2a59;
+    color: #f0f4ff;
+  }
+  
+  body.dark-mode th.sorting::after,
+  body.dark-mode th.sorting::before,
+  body.dark-mode th.sorting_asc::after,
+  body.dark-mode th.sorting_desc::after {
+    color: #8892b0;
+  }
+  
+  /* Tambahan */
+  body.dark-mode .form-control {
+    background-color: #1a2550;
+    color: #ffffff;
+    border-color: #2a355f;
+  }
+  
+  body.dark-mode .dropdown-menu {
+    background-color: #1a2550;
+    color: #ffffff;
+    border: 1px solid #2a355f;
+  }
+  

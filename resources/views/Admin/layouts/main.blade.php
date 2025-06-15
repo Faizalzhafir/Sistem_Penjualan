@@ -20,12 +20,22 @@
     <link rel="stylesheet" href="{{ asset('src/assets/extra-libs/datatables.net-bs4/css/responsive.dataTables.min.css') }}">
     <!-- Custom CSS -->
     <link href="{{ asset('src/dist/css/style.min.css') }}" rel="stylesheet">
-
+    <link href="{{ asset('src/dist/css/dark-mode.css') }}" rel="stylesheet">
     <style>
         th.sorting_disabled::after,
         th.sorting_disabled::before {
         display: none !important;
         }
+
+        .table-transaksi td, .table-transaksi th {
+            vertical-align: middle !important;
+            text-align: center;
+        }
+
+        .table-transaksi td input[type="number"] {
+            margin: auto;
+        }
+
     </style>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -137,6 +147,29 @@
     <script src="{{ asset('src/assets/extra-libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('src/assets/extra-libs/datatables.net-bs4/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('src/dist/js/pages/datatable/datatable-basic.init.js') }}"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        const toggleBtn = document.getElementById('toggle-dark-mode');
+        const body = document.body;
+
+        if (localStorage.getItem('dark-mode') === 'enabled') {
+            body.classList.add('dark-mode');
+        }
+
+        toggleBtn.addEventListener('click', function () {
+            body.classList.toggle('dark-mode');
+
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('dark-mode', 'enabled');
+            } else {
+                localStorage.setItem('dark-mode', 'disabled');
+            }
+        });
+    });
+
+    </script>
+
 </body>
 
 </html>

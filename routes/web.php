@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\KategoriController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProdukController;
 use App\Http\Controllers\Admin\UserController;
 
@@ -16,13 +17,14 @@ use App\Http\Controllers\Admin\UserController;
 |
 */
 
-Route::get('/', function () {
-    return view('Admin.dashboard');
-});
 Route::get('/welcome', function () {
     return view('welcome');
 });
 
+Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('transaksi', [DashboardController::class, 'transaksi'])->name('transaksi');
+Route::get('cek', [DashboardController::class, 'cek'])->name('cek');
+Route::get('riwayat', [DashboardController::class, 'riwayat'])->name('riwayat');
 Route::resource('kategori', KategoriController::class);
 Route::resource('produk', ProdukController::class);
 Route::resource('user', UserController::class);

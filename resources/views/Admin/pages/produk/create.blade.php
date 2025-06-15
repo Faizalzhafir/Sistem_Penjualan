@@ -7,7 +7,7 @@
     @endsection
 
     @section('breadcrumb')
-        <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center mb-2">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb m-0 p-0">
                     <li class="breadcrumb-item text-muted active" aria-current="page"><a href="{{ route('produk.index') }}">Index</a></li>

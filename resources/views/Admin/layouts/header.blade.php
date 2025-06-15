@@ -121,6 +121,7 @@
                                 <a class="dropdown-item" href="#">Another action</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#">Something else here</a>
+                                <button id="toggle-dark-mode" class="btn btn-sm btn-outline-light ms-3">🌙</button>
                             </div>
                         </li>
                         <li class="nav-item d-none d-md-block">

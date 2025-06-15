@@ -28,6 +28,49 @@
                         <h4 class="card-title">Daftar Produk</h4>
                         <h6 class="card-subtitle"><b></b>Menampilkan seluruh data produk dari berbagai kategori.</h6>
                         <a href="{{ route('produk.create') }}" class="btn btn-primary mb-2">Tambah Produk</a>
+                        <hr>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="customize-input">
+                                            <select
+                                                class="custom-select form-control bg-dark text-white custom-radius custom-shadow border-0">
+                                                <option selected>Kategori</option>
+                                                <option value="1">AB</option>
+                                                <option value="2">AK</option>
+                                                <option value="3">BE</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="customize-input">
+                                            <select
+                                                class="custom-select form-control bg-dark text-white custom-radius custom-shadow border-0">
+                                                <option selected>Status</option>
+                                                <option value="1">AB</option>
+                                                <option value="2">AK</option>
+                                                <option value="3">BE</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="customize-input">
+                                            <select
+                                                class="custom-select form-control bg-dark text-white custom-radius custom-shadow border-0">
+                                                <option selected>Stok</option>
+                                                <option value="1">AB</option>
+                                                <option value="2">AK</option>
+                                                <option value="3">BE</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <hr>
                         <div class="table-responsive">
                             <table id="multi_col_order"
                                    class="table border table-striped table-bordered text-nowrap" style="width:100%">

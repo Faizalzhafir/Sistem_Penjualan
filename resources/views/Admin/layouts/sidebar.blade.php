@@ -5,7 +5,7 @@
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav">
             <ul id="sidebarnav">
-                <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="{{ url('/') }}"
+                <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="{{ route('dashboard') }}"
                                 aria-expanded="false"><i data-feather="home" class="feather-icon"></i><span
                                     class="hide-menu">Dashboard</span></a></li>
                 <li class="list-divider"></li>
@@ -25,13 +25,13 @@
                 <li class="list-divider"></li>
                 <li class="nav-small-cap"><span class="hide-menu">Penjualan</span></li>
 
-                <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="authentication-login1.html"
+                <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="{{ route('transaksi') }}"
                         aria-expanded="false"><i data-feather="shopping-cart" class="feather-icon"></i><span
                         class="hide-menu">Transaksi
                         </span></a>
                 </li>
                 <li class="sidebar-item"> <a class="sidebar-link sidebar-link"
-                        href="authentication-register1.html" aria-expanded="false"><i data-feather="file-text" class="feather-icon"></i><span
+                        href="{{ route('riwayat') }}" aria-expanded="false"><i data-feather="file-text" class="feather-icon"></i><span
                             class="hide-menu">Riwayat Transaksi
                         </span></a>
                 </li>
