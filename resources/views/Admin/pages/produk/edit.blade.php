@@ -10,7 +10,7 @@
     <div class="d-flex align-items-center mb-2">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb m-0 p-0">
-                <li class="breadcrumb-item text-muted active" aria-current="page"><a href="{{ route('produk.index') }}">Index</a></li>
+                <li class="breadcrumb-item text-muted active" aria-current="page"><a href="{{ route('produk-list.index') }}">Index</a></li>
                 <li class="breadcrumb-item text-muted active" aria-current="page">Edit</li>
             </ol>
         </nav>
@@ -25,7 +25,7 @@
                         <h4 class="card-title">Form Edit Produk</h4>
                         <h6 class="card-subtitle"><b>Perbarui data produk dengan benar sebelum menyimpan</b></h6>
 
-                        <form action="{{ route('produk.update', $produk->id) }}" method="POST" enctype="multipart/form-data" class="mt-3 form-horizontal">
+                        <form action="{{ route('produk-list.update', $produk->id) }}" method="POST" enctype="multipart/form-data" class="mt-3 form-horizontal">
                             @csrf
                             @method('PUT')
 

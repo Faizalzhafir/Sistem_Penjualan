@@ -27,7 +27,7 @@
                     <div class="card-body">
                         <h4 class="card-title">Daftar Produk</h4>
                         <h6 class="card-subtitle"><b></b>Menampilkan seluruh data produk dari berbagai kategori.</h6>
-                        <a href="{{ route('produk.create') }}" class="btn btn-primary mb-2">Tambah Produk</a>
+                        <a href="{{ route('produk-list.create') }}" class="btn btn-primary mb-2">Tambah Produk</a>
                         <hr>
                             <div class="row">
                                 <div class="col-md-4">
@@ -107,7 +107,7 @@
                                         <td>{{ $item->diskon }}%</td>
                                         <td>{{ $item->stok }}</td>
                                         <td>
-                                            <a href="{{ route('produk.edit', $item) }}" class="btn waves-effect waves-light btn-outline-primary"><i class="far fa-edit"></i></a>
+                                            <a href="{{ route('produk-list.edit', $item) }}" class="btn waves-effect waves-light btn-outline-primary"><i class="far fa-edit"></i></a>
                                             <form action="{{ route('produk.destroy', $item) }}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')

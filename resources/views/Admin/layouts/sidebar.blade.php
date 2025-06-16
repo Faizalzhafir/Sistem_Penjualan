@@ -16,7 +16,7 @@
                                     class="hide-menu">Kategori
                                 </span></a>
                 </li>
-                <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="{{ route('produk.index') }}"
+                <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="{{ route('produk-list.index') }}"
                                 aria-expanded="false"><i data-feather="shopping-bag" class="feather-icon"></i><span
                                     class="hide-menu">Produk</span></a></li>
                 <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="{{ route('user.index') }}"
@@ -38,11 +38,11 @@
                 <li class="list-divider"></li>
                 <li class="nav-small-cap"><span class="hide-menu">Extra</span></li>
 
-                <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="authentication-login1.html"
+                <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="{{ url('settings/create') }}"
                         aria-expanded="false"><i data-feather="settings" class="feather-icon"></i><span
                         class="hide-menu">Setting</span></a></li>
                         </li>
-                <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="authentication-login1.html"
+                <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="{{ route('logout') }}"
                         aria-expanded="false"><i data-feather="log-out" class="feather-icon"></i><span
                         class="hide-menu">Logout</span></a></li>
                         </li>
