@@ -32,8 +32,8 @@
                         <div class="table-responsive">
                             <table id="zero_config"
                                 class="table border table-striped table-bordered text-nowrap" style="width:100%">
-                                <thead>
-                                    <tr class="text-dark">
+                                <thead class="bg-primary">
+                                    <tr class="text-white">
                                         <th>No</th>
                                         <th>Nama</th>
                                         <th class="sorting_disabled">Aksi</th>

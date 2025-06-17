@@ -13,20 +13,6 @@ class DashboardController extends Controller
         return view('Admin.dashboard');
     }
 
-    public function transaksi()
-    {
-        $produk = Produk::with('kategori')->get();
-        return view('Admin.pages.transaksi', compact('produk'));
-    }
-
-    public function cek()
-    {
-        return view('Admin.pages.cek');
-    }
-
-    public function riwayat()
-    {
-        return view('Admin.pages.riwayat');
-    }
+    
 
 }

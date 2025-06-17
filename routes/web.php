@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\Admin\TransaksiController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ProdukController;
 use App\Http\Controllers\Admin\SettingController;
@@ -48,11 +48,10 @@ Route::resource('login', AuthLoginController::class);
 Route::resource('register', AuthRegisterController::class);
 
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-Route::get('transaksi', [DashboardController::class, 'transaksi'])->name('transaksi');
-Route::get('cek', [DashboardController::class, 'cek'])->name('cek');
-Route::get('riwayat', [DashboardController::class, 'riwayat'])->name('riwayat');
+Route::get('cek', [TransaksiController::class, 'cek'])->name('cek');
+Route::get('riwayat', [TransaksiController::class, 'riwayat'])->name('riwayat');
 Route::resource('kategori', KategoriController::class);
 Route::resource('/produk-list', ProdukController::class);
 Route::resource('user', UserController::class);
 Route::resource('settings', SettingController::class);
-
+Route::resource('transaksi', TransaksiController::class);

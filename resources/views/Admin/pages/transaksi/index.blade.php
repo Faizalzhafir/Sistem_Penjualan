@@ -6,16 +6,6 @@
     <h4 class="page-title text-dark font-weight-medium mb-1">Transaksi</h4>
     @endsection
 
-    @section('breadcrumb')
-    <div class="d-flex align-items-center mb-2">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb m-0 p-0">
-                <li class="breadcrumb-item text-muted active" aria-current="page">Chart</li>
-            </ol>
-        </nav>
-    </div>
-    @endsection
-
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
@@ -28,23 +18,16 @@
                         <h4 class="mb-0 text-white">Transaksi Penjualan</h4>
                     </div>
                     <div class="card-body">
-                        <form action="#">
                             <div class="form-body">
                                 <label class="form-label">Daftar Produk dan Detail Penjualan </label>
                                 <div class="row">
                                     <div class="col-12">
-                                        <!-- <div class="col-md-9">
-                                            <div class="form-group mb-3">
-                                                <input type="search" class="form-control" placeholder="Cari Produk">
-                                            </div>
-                                        </div>
-                                        <button type="button" style="display: inline;" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#primary-header-modal">Primary Header</button> -->
                                         <div class="input-group">
                                             <div class="col-md-11">
                                                 <div class="form-group">
-                                                    <input type="search" class="form-control" placeholder="Cari Produk">
+                                                        <input type="search" class="form-control" placeholder="Masukkan kode Produk" id="inputKodeProduk">
+                                                    </div>
                                                 </div>
-                                            </div>
                                             <div class="col-md-1">
                                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#primary-header-modal"><i class="far fa-plus-square"></i></button>
                                             </div>
@@ -54,7 +37,7 @@
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header modal-colored-header bg-primary">
-                                                        <h4 class="modal-title" id="primary-header-modalLabel">Modal Heading
+                                                        <h4 class="modal-title" id="primary-header-modalLabel">Pilih Produk
                                                         </h4>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-hidden="true"></button>
@@ -83,7 +66,23 @@
                                                                         <td>{{ $item->diskon }}%</td>
                                                                         <td>{{ $item->stok }}</td>
                                                                         <td>
-                                                                            <button type="button" class="btn btn-sm btn-primary"><i class="far fa-arrow-alt-circle-down"></i></button>
+                                                                        @php
+                                                                            $produkJson = json_encode([
+                                                                                "id" => $item->id,
+                                                                                "kode" => $item->kode,
+                                                                                "nama" => $item->nama,
+                                                                                "kategori" => $item->kategori->nama,
+                                                                                "diskon" => $item->diskon,
+                                                                                "harga_jual" => $item->harga_jual,
+                                                                            ]);
+                                                                        @endphp
+
+                                                                        <button type="button"
+                                                                            class="btn btn-sm btn-primary"
+                                                                            data-produk='{{ $produkJson }}'
+                                                                            onclick="tambahProduk(this)">
+                                                                            <i class="far fa-arrow-alt-circle-down"></i>
+                                                                        </button>
                                                                         </td>
                                                                     </tr>
                                                                     @endforeach
@@ -98,7 +97,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <label class="form-label">Total Produk : <span>12</span></label>
+                            <label class="form-label">Total Jenis Produk : <span id="total_produk">0</span></label>
                             <div class="table-responsive">
                                 <table class="table table-sm mb-0 table-transaksi">
                                     <thead class="bg-primary text-white">
@@ -114,56 +113,15 @@
                                         </tr>
                                     </thead>
                                     <tbody class="text-center align-middle">
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Eichmann</td>
-                                            <td>Nigam</td>
-                                            <td>Eichmann</td>
-                                            <td>Nigam</td>
-                                            <td class="text-center align-middle">
-                                                <input type="number" class="form-control" value="6" style="width: 70px;">
-                                            </td>
-                                            <td class="text-center align-middle">
-                                                <input type="number" class="form-control" value="8000" style="width: 150px;" readonly>
-                                            </td>
-                                            <td>
-                                                <form action="#" method="POST" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button  class="btn btn-sm btn-rounded btn-danger"><i class="fas fa-window-close"></i></button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Eichmann</td>
-                                            <td>Nigam</td>
-                                            <td>Eichmann</td>
-                                            <td>Nigam</td>
-                                            <td class="text-center align-middle">
-                                                <input type="number" class="form-control" value="6" style="width: 70px;">
-                                            </td>
-                                            <td class="text-center align-middle">
-                                                <input type="number" class="form-control" value="8000" style="width: 150px;">
-                                            </td>
-                                            <td>
-                                                <form action="#" method="POST" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button  class="btn btn-sm btn-rounded btn-danger"><i class="fas fa-window-close"></i></button>
-                                                </form>
-                                            </td>
-                                        </tr>
+
                                     </tbody>
                                 </table>
                             </div>
                             <div class="form-actions mt-3">
                                 <div class="text-end">
-                                    <button type="submit" class="btn btn-info">Submit</button>
-                                    <button type="reset" class="btn btn-dark">Reset</button>
+                                    <a href="{{ route('transaksi.index') }}" class="btn btn-dark">Reset</a>
                                 </div>
                             </div>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -173,71 +131,54 @@
                         <h4 class="mb-0 text-white">Detail Penjualan</h4>
                     </div>
                     <div class="card-body">
-                        <form class="form-horizontal">
+                        <form action="{{ route('transaksi.store') }}" method="POST" id="formTransaksi">
+                            <input type="hidden" name="produk_data" id="produk_data">
+                            <input type="hidden" name="total" id="total_hidden">
+                            <input type="hidden" name="total_diskon" id="total_diskon_hidden">
+                            <input type="hidden" name="bayar" id="bayar_hidden">
+                            <input type="hidden" name="diterima" id="diterima_hidden">
+                            <input type="hidden" name="jenis_transaksi" value="offline">
+                            <input type="hidden" name="metode_pembayaran" value="cash">
+                            @csrf
                             <div class="form-group row">
                                 <label for="inputHorizontalSuccess"
                                     class="col-sm-4 col-form-label">Total</label>
                                 <div class="col-sm-8">
-                                    <input type="number" class="form-control" disabled>
+                                    <input type="number" class="form-control" id="total" disabled>
                                 </div>
                             </div>
                             <div class="mt-3 form-group row">
                                 <label for="inputHorizontalSuccess"
                                     class="col-sm-4 col-form-label">Total Diskon</label>
                                 <div class="col-sm-8">
-                                    <input type="number" class="form-control" disabled>
+                                    <input type="number" class="form-control" id="total_diskon" disabled>
                                 </div>
                             </div>
                             <div class="mt-3 form-group row">
                                 <label for="inputHorizontalSuccess"
                                     class="col-sm-4 col-form-label">Bayar</label>
                                 <div class="col-sm-8">
-                                    <input type="number" class="form-control" disabled>
+                                    <input type="number" class="form-control" id="bayar" disabled>
                                 </div>
                             </div>
                             <div class="mt-3 form-group row">
                                 <label for="inputHorizontalSuccess"
                                     class="col-sm-4 col-form-label">Diterima</label>
                                 <div class="col-sm-8">
-                                    <input type="number" class="form-control">
+                                    <input type="number" class="form-control" id="diterima">
                                 </div>
                             </div>
                             <div class="mt-3 form-group row">
                                 <label for="inputHorizontalSuccess"
                                     class="col-sm-4 col-form-label">Kembali</label>
                                 <div class="col-sm-8">
-                                    <input type="number" class="form-control" disabled>
+                                    <input type="number" class="form-control" id="kembali" disabled>
                                 </div>
                             </div>
                             <div class="form-actions mt-3">
                                 <div class="text-end">
-                                    <a href="{{ route('cek') }}" class="btn btn-info"><i class="fas fa-shopping-cart"></i> Checkout</a>
-                                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#centermodal"><i class="fas fa-shopping-cart"></i> Checkout</button>
+                                    <button onclick="submitForm()" class="btn btn-info"><i class="fas fa-shopping-cart"></i> Checkout</button>
                                 </div>
-                                <div class="modal fade" id="centermodal" tabindex="-1" role="dialog" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title" id="myCenterModalLabel">Center modal</h4>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-hidden="true"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="card text-center mt-2">
-                                                    <div class="card-header bg-success">
-                                                    <span class="text-white">TRANSAKSI BERHASIL !</span>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <h4 class="card-title">Transaksi sudah berhasil dilakukan, jangan lupa cek kembali uang pembayarannya</h4>
-                                                        <p class="card-text">Dengan nomor transaksi :<span class="text-danger"> TRSOLN000001</span></p>
-                                                        <a href="" class="btn btn-success">Cetak Nota</a>
-                                                        <a href="" class="btn btn-primary">Buat E-Invoice</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div><!-- /.modal-content -->
-                                    </div><!-- /.modal-dialog -->
-                                </div><!-- /.modal -->
                             </div>
                         </form>
                     </div>
@@ -247,3 +188,149 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+    <script>
+        const produkList = @json($produk);
+
+        let produkDipilih = [];
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('inputKodeProduk').addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault(); // agar tidak reload/form submit
+                    const kode = this.value.trim();
+
+                    if (kode === '') return;
+
+                    // Cari produk dari list
+                    const dataProduk = produkList.find(p => p.kode === kode);
+
+                    if (!dataProduk) {
+                        alert('Produk tidak ditemukan!');
+                        return;
+                    }
+
+                    // Tambahkan ke produkDipilih
+                    masukKeTabel(dataProduk);
+
+                    // Kosongkan input setelah berhasil
+                    this.value = '';
+                }
+            });
+        });
+
+        function tambahProduk(button) {
+            const dataProduk = JSON.parse(button.getAttribute('data-produk')); // parse dari data-produk
+            masukKeTabel(dataProduk);
+
+        }
+
+        function masukKeTabel(dataProduk) {
+            const sudahAda = produkDipilih.find(p => p.product_id === dataProduk.id);
+            if (sudahAda) {
+                alert('Produk sudah ditambahkan!');
+                return;
+            }
+
+            produkDipilih.push({
+                product_id: dataProduk.id,
+                kode: dataProduk.kode,
+                nama: dataProduk.nama,
+                kategori: dataProduk.kategori,
+                diskon: dataProduk.diskon,
+                harga_jual: dataProduk.harga_jual,
+                jumlah: 1,
+            });
+
+            renderTabel();
+            simpanKeHiddenInput();
+            hitungDetail()
+        }
+
+        function renderTabel() {
+            let tbody = '';
+            produkDipilih.forEach((p, index) => {
+                tbody += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${p.kode}</td>
+                        <td>${p.nama}</td>
+                        <td>${p.kategori}</td>
+                        <td>${p.diskon}%</td>
+                        <td><input type="number" value="${p.jumlah}" min="1" onchange="ubahJumlah(${index}, this.value)" class="form-control" style="width:70px;"></td>
+                        <td><input type="number" value="${p.jumlah * p.harga_jual}" class="form-control" readonly style="width:150px;"></td>
+                        <td><button type="button" onclick="hapusProduk(${index})" class="btn btn-sm btn-danger"><i class="fas fa-window-close"></i></button></td>
+                    </tr>
+                `;
+            });
+
+            document.querySelector('.table-transaksi tbody').innerHTML = tbody;
+
+            // Hitung total jumlah produk
+            const totalProduk = produkDipilih.length;
+
+            // Tampilkan ke <span id="total_produk">
+            document.getElementById('total_produk').textContent = totalProduk;
+        }
+
+        function ubahJumlah(index, jumlah) {
+            produkDipilih[index].jumlah = parseInt(jumlah);
+            renderTabel();
+            simpanKeHiddenInput();
+            hitungDetail()
+        }
+
+        function hapusProduk(index) {
+            produkDipilih.splice(index, 1);
+            renderTabel();
+            simpanKeHiddenInput();
+            hitungDetail()
+        }
+
+        function simpanKeHiddenInput() {
+            document.getElementById('produk_data').value = JSON.stringify(produkDipilih);
+        }
+
+        function hitungDetail() {
+            let total = 0;
+            let totalDiskon = 0;
+
+            produkDipilih.forEach(p => {
+                total += p.harga_jual * p.jumlah;
+                totalDiskon += p.harga_jual * p.jumlah * (p.diskon / 100);
+            });
+
+            let bayar = total - totalDiskon;
+
+            // Tampilkan ke input
+            document.getElementById('total').value = total;
+            document.getElementById('total_diskon').value = totalDiskon;
+            document.getElementById('bayar').value = bayar;
+            // Simpan ke input hidden
+            document.getElementById('total_hidden').value = total;
+            document.getElementById('total_diskon_hidden').value = totalDiskon;
+            document.getElementById('bayar_hidden').value = bayar;
+
+            // Cek kembali nilai diterima dan update kembalian
+            const diterima = parseFloat(document.getElementById('diterima').value || 0);
+            const kembali = diterima - bayar;
+            document.getElementById('kembali').value = kembali >= 0 ? kembali : 0;
+            document.getElementById('diterima_hidden').value = diterima;
+        }
+
+        // Ketika input diterima berubah, update kembalian
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('diterima').addEventListener('input', function () {
+                hitungDetail();
+            });
+        });
+
+        function submitForm() {
+            // update nilai hidden input dari field visible
+            hitungDetail(); // pastikan hitungan terakhir ter-update
+            document.getElementById('formTransaksi').submit();
+        }
+
+    </script>
+@endpush

@@ -2,9 +2,13 @@
 
 @section('content')
 
+    @section('title')
+    <h4 class="page-title text-dark font-weight-medium mb-1">Riwayat Transaksi</h4>
+    @endsection
+
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-6 col-lg-3">
+            <div class="col-sm-6 col-lg-4">
                 <div class="card border-end bg-dark">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
@@ -14,17 +18,17 @@
                                         <span
                                             class="badge bg-primary font-12 text-white font-weight-medium rounded-pill ms-2 d-lg-block d-md-none">+18.33%</span>
                                         </div>
-                                    <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">New Clients
+                                    <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Transaksi Online
                                     </h6>
                             </div>
                             <div class="ms-auto mt-md-3 mt-lg-0">
-                                <span class="opacity-7 text-muted"><i data-feather="user-plus"></i></span>
+                                <span class="opacity-7 text-muted"><i data-feather="cast"></i></span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6 col-lg-3">
+            <div class="col-sm-6 col-lg-4">
                 <div class="card border-end bg-dark">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
@@ -34,17 +38,17 @@
                                         <span
                                             class="badge bg-primary font-12 text-white font-weight-medium rounded-pill ms-2 d-lg-block d-md-none">+18.33%</span>
                                         </div>
-                                    <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">New Clients
+                                    <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Pending
                                     </h6>
                             </div>
                             <div class="ms-auto mt-md-3 mt-lg-0">
-                                <span class="opacity-7 text-muted"><i data-feather="user-plus"></i></span>
+                                <span class="opacity-7 text-muted"><i data-feather="pause-circle"></i></span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6 col-lg-3">
+            <div class="col-sm-6 col-lg-4">
                 <div class="card border-end bg-dark">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
@@ -54,31 +58,11 @@
                                         <span
                                             class="badge bg-primary font-12 text-white font-weight-medium rounded-pill ms-2 d-lg-block d-md-none">+18.33%</span>
                                         </div>
-                                    <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">New Clients
+                                    <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Lunas
                                     </h6>
                             </div>
                             <div class="ms-auto mt-md-3 mt-lg-0">
-                                <span class="opacity-7 text-muted"><i data-feather="user-plus"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-lg-3">
-                <div class="card border-end bg-dark">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <div class="d-inline-flex align-items-center">
-                                    <h2 class="text-white mb-1 font-weight-medium">236</h2>
-                                        <span
-                                            class="badge bg-primary font-12 text-white font-weight-medium rounded-pill ms-2 d-lg-block d-md-none">+18.33%</span>
-                                        </div>
-                                    <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">New Clients
-                                    </h6>
-                            </div>
-                            <div class="ms-auto mt-md-3 mt-lg-0">
-                                <span class="opacity-7 text-muted"><i data-feather="user-plus"></i></span>
+                                <span class="opacity-7 text-muted"><i data-feather="check-square"></i></span>
                             </div>
                         </div>
                     </div>
@@ -86,7 +70,9 @@
             </div>
             <div class="card">
                 <div class="card-body">
-                    <div class="btn-group dropright mb-3">
+                <h4 class="card-title">Daftar Riwayat Transaksi</h4>
+                <h6 class="card-subtitle"><b>Menampilkan daftar riwayat transaksi yang sudah dilakukan.</b></h6>
+                    <div class="text-end mb-3">
                         <button type="button" class="btn btn-outline-primary dropdown-toggle"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-download"></i>
                             Export
@@ -101,8 +87,8 @@
                     </div>
                     <div class="table-responsive">
                         <table id="multi_col_order" class="table border table-striped table-bordered text-nowrap">
-                            <thead>
-                                <tr class="text-dark">
+                            <thead class="bg-primary">
+                                <tr class="text-white">
                                     <th>No</th>
                                     <th>User</th>
                                     <th>Tanggal</th>
@@ -112,14 +98,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
+                                @foreach ($transaksi as $item)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $item->user->name }}</td>
+                                        <td>{{ $item->created_at->format('d M Y H:i') }}</td>
+                                        <td>Rp {{ number_format($item->total, 0, ',', '.') }}</td>
+                                        <td>{{ Str::title(str_replace('_', ' ', $item->metode_pembayaran)) }}</td>
+                                        <td>{{ Str::title(str_replace('_', ' ', $item->status_pembayaran)) }}</td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

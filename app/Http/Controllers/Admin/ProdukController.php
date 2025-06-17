@@ -12,11 +12,42 @@ class ProdukController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $produk = Produk::with('kategori')->get();
-        return view('admin.pages.produk.index', compact('produk'));
+        $kategori = Kategori::all(); // untuk dropdown kategori
+
+        $produk = Produk::with('kategori');
+
+        // Filter Kategori
+        if ($request->filled('kategori_id')) {
+            $produk->where('kategori_id', $request->kategori_id);
+        }
+
+        // Filter Status Stok
+        if ($request->filled('stok_status')) {
+            if ($request->stok_status === 'kosong') {
+                $produk->where('stok', 0);
+            } elseif ($request->stok_status === 'sedikit') {
+                $produk->whereBetween('stok', [1, 10]);
+            } elseif ($request->stok_status === 'tersedia') {
+                $produk->where('stok', '>', 10);
+            }
+        }
+
+        // Filter Diskon
+        if ($request->filled('diskon_status')) {
+            if ($request->diskon_status === 'ada') {
+                $produk->where('diskon', '>', 0);
+            } elseif ($request->diskon_status === 'tidak') {
+                $produk->where('diskon', 0);
+            }
+        }
+
+        $produk = $produk->get();
+
+        return view('admin.pages.produk.index', compact('produk', 'kategori'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -75,7 +106,7 @@ class ProdukController extends Controller
             'image' => $imageName,
         ]);
     
-        return redirect()->route('produk.index')->with('success', 'Produk berhasil ditambahkan');
+        return redirect()->route('produk-list.index')->with('success', 'Produk berhasil ditambahkan');
     }
 
     /**
@@ -133,7 +164,7 @@ class ProdukController extends Controller
     
         $produk->save();
     
-        return redirect()->route('produk.index')->with('success', 'Produk berhasil diupdate');
+        return redirect()->route('produk-list.index')->with('success', 'Produk berhasil diupdate');
     }
 
     /**
@@ -142,6 +173,6 @@ class ProdukController extends Controller
     public function destroy(Produk $produk)
     {
         $produk->delete();
-        return redirect()->route('produk.index')->with('success', 'Produk berhasil dihapus.');
+        return redirect()->route('produk-list.index')->with('success', 'Produk berhasil dihapus.');
     }
 }

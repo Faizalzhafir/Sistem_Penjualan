@@ -30,52 +30,50 @@
                         <a href="{{ route('produk-list.create') }}" class="btn btn-primary mb-2">Tambah Produk</a>
                         <hr>
                             <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <div class="customize-input">
-                                            <select
+                                <form method="GET" action="{{ route('produk-list.index') }}">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <select name="kategori_id"
                                                 class="custom-select form-control bg-dark text-white custom-radius custom-shadow border-0">
-                                                <option selected>Kategori</option>
-                                                <option value="1">AB</option>
-                                                <option value="2">AK</option>
-                                                <option value="3">BE</option>
+                                                <option value=""> Semua Kategori </option>
+                                                @foreach($kategori as $item)
+                                                    <option value="{{ $item->id }}" {{ request('kategori_id') == $item->id ? 'selected' : '' }}>
+                                                        {{ $item->nama }}
+                                                    </option>
+                                                @endforeach
                                             </select>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <div class="customize-input">
-                                            <select
+                                        <div class="col-md-3">
+                                            <select name="stok_status"
                                                 class="custom-select form-control bg-dark text-white custom-radius custom-shadow border-0">
-                                                <option selected>Status</option>
-                                                <option value="1">AB</option>
-                                                <option value="2">AK</option>
-                                                <option value="3">BE</option>
+                                                <option value=""> Semua Stok </option>
+                                                <option value="kosong" {{ request('stok_status') == 'kosong' ? 'selected' : '' }}>Kosong</option>
+                                                <option value="sedikit" {{ request('stok_status') == 'sedikit' ? 'selected' : '' }}>Sedikit</option>
+                                                <option value="tersedia" {{ request('stok_status') == 'tersedia' ? 'selected' : '' }}>Tersedia</option>
                                             </select>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <div class="customize-input">
-                                            <select
+                                        <div class="col-md-3">
+                                            <select name="diskon_status"
                                                 class="custom-select form-control bg-dark text-white custom-radius custom-shadow border-0">
-                                                <option selected>Stok</option>
-                                                <option value="1">AB</option>
-                                                <option value="2">AK</option>
-                                                <option value="3">BE</option>
+                                                <option value=""> Semua Diskon </option>
+                                                <option value="ada" {{ request('diskon_status') == 'ada' ? 'selected' : '' }}>Ada Diskon</option>
+                                                <option value="tidak" {{ request('diskon_status') == 'tidak' ? 'selected' : '' }}>Tidak Ada</option>
                                             </select>
                                         </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-info">Filter</button>
+                                                <a href="{{ route('produk-list.index') }}" class="btn btn-dark">Reset</a>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         <hr>
                         <div class="table-responsive">
-                            <table id="multi_col_order"
-                                   class="table border table-striped table-bordered text-nowrap" style="width:100%">
-                                <thead>
-                                    <tr class="text-dark">
+                            <table id="multi_col_order" class="table border table-striped table-bordered text-nowrap" style="width:100%">
+                                <thead class="bg-primary">
+                                   <tr class="text-white">
                                         <th>No</th>
                                         <th>Gambar</th>
                                         <th>Kode</th>
@@ -85,6 +83,7 @@
                                         <th>Harga Jual</th>
                                         <th>Diskon (%)</th>
                                         <th>Stok</th>
+                                        <th>Status</th>
                                         <th class="sorting_disabled">Aksi</th>
                                     </tr>
                                 </thead>
@@ -107,8 +106,17 @@
                                         <td>{{ $item->diskon }}%</td>
                                         <td>{{ $item->stok }}</td>
                                         <td>
+                                            @if ($item->stok >= 1 && $item->stok <= 10)
+                                                <span class="badge text-bg-warning">SEDIKIT</span>
+                                            @elseif ($item->stok > 10)
+                                                <span class="badge text-bg-success">TERSEDIA</span>
+                                            @else
+                                                <span class="badge text-bg-danger">KOSONG</span>
+                                            @endif
+                                        </td>
+                                        <td>
                                             <a href="{{ route('produk-list.edit', $item) }}" class="btn waves-effect waves-light btn-outline-primary"><i class="far fa-edit"></i></a>
-                                            <form action="{{ route('produk.destroy', $item) }}" method="POST" style="display:inline;">
+                                            <form action="{{ route('produk-list.destroy', $item) }}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button onclick="return confirm('Yakin ingin menghapus produk {{ $item->nama }}?')" class="btn waves-effect waves-light btn-outline-danger"><i class="far fa-trash-alt"></i></button>

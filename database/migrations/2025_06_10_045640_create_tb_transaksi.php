@@ -13,11 +13,17 @@ return new class extends Migration
     {
         Schema::create('tb_transaksi', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
             $table->integer('total');
-            $table->enum('status_pembayaran', ['pending', 'lunas'])->default('pending');
-            $table->timestamps(); // created_at & updated_at
+            
+            // Tambahan kolom penting:
+            $table->enum('jenis_transaksi', ['offline', 'online'])->default('offline');
+            $table->enum('metode_pembayaran', ['cash', 'transfer', 'qris', 'payment_gateway'])->nullable();
+            $table->enum('status_pembayaran', ['pending', 'lunas', 'gagal'])->default('pending');
+            $table->string('kode_transaksi')->unique(); // TRX20250617001 dst
+            $table->timestamps();
         });
+        
     }
 
     /**

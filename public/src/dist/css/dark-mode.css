@@ -38,14 +38,14 @@ body.dark-mode {
   }
   
   body.dark-mode a {
-    color: #76c1ff; /* Biru terang untuk link */
+    color: #e5eaf2; /* Biru terang untuk link */
   }
   
-  body.dark-mode .btn {
+  /* body.dark-mode .btn {
     color: #ffffff;
     background-color: #1f2b55;
     border-color: #324372;
-  }
+  } */
   
   body.dark-mode .breadcrumb {
     background-color: transparent;
@@ -83,10 +83,10 @@ body.dark-mode {
     color: #e5eaf2;
   }
   
-  body.dark-mode table.dataTable thead th {
+  /* body.dark-mode table.dataTable thead th {
     background-color: #1b2a59;
     color: #f0f4ff;
-  }
+  } */
   
   body.dark-mode th.sorting::after,
   body.dark-mode th.sorting::before,
@@ -100,9 +100,9 @@ body.dark-mode {
     background-color: #1a2550;
     color: #ffffff;
     border-color: #2a355f;
-  }
+  } 
   
-  body.dark-mode .dropdown-menu {
+   body.dark-mode .dropdown-menu {
     background-color: #1a2550;
     color: #ffffff;
     border: 1px solid #2a355f;

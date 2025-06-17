@@ -25,7 +25,7 @@
                 <li class="list-divider"></li>
                 <li class="nav-small-cap"><span class="hide-menu">Penjualan</span></li>
 
-                <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="{{ route('transaksi') }}"
+                <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="{{ route('transaksi.index') }}"
                         aria-expanded="false"><i data-feather="shopping-cart" class="feather-icon"></i><span
                         class="hide-menu">Transaksi
                         </span></a>

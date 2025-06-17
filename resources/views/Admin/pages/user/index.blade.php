@@ -28,8 +28,8 @@
                 <a href="{{ route('user.create') }}" class="btn btn-primary mb-2">Tambah User</a>
             <div class="table-responsive">
                 <table id="multi_col_order" class="table border table-striped table-bordered text-nowrap">
-                    <thead>
-                        <tr class="text-dark">
+                    <thead class="bg-primary">
+                        <tr class="text-white">
                             <th>No</th>
                             <th>Nama</th>
                             <th>Email</th>
