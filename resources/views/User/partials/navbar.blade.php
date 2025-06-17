@@ -23,8 +23,8 @@
                             <a href="#" class="my-auto">
                                 <i class="fas fa-user fa-2x"></i>
                             </a>
-                            <a href="{{ route('logout') }}" class="btn btn-outline-primary rounded-pill px-4 py-2 text-decoration-none ms-3">
-                                <i class="fas fa-sign-in-alt me-2"></i> Logout
+                            <a href="{{ route('logout') }}" class="btn btn-outline-danger rounded-pill px-4 py-2 text-decoration-none ms-3">
+                                 Logout
                             </a>
                         </div>
                         @endguest

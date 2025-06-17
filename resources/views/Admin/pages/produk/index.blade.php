@@ -108,7 +108,7 @@
                                         <td>{{ $item->stok }}</td>
                                         <td>
                                             <a href="{{ route('produk-list.edit', $item) }}" class="btn waves-effect waves-light btn-outline-primary"><i class="far fa-edit"></i></a>
-                                            <form action="{{ route('produk.destroy', $item) }}" method="POST" style="display:inline;">
+                                            <form action="{{ route('produk-list.destroy', $item) }}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button onclick="return confirm('Yakin ingin menghapus produk {{ $item->nama }}?')" class="btn waves-effect waves-light btn-outline-danger"><i class="far fa-trash-alt"></i></button>

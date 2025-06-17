@@ -22,7 +22,8 @@ class SettingController extends Controller
      */
     public function create()
     {
-        return view('Admin.pages.setting.create');
+        $setting = Setting::first();
+        return view('Admin.pages.setting.create', compact('setting'));
     }
 
     /**
@@ -37,6 +38,8 @@ class SettingController extends Controller
             'email' => 'required',
             'logo' => 'image|file|max:2048',
            ]); 
+
+           $setting = Setting::first();
            
            $item = [
             'nama_toko'=>$request->nama_toko,
@@ -45,16 +48,26 @@ class SettingController extends Controller
             'email'=>$request->email,
             'logo'=>$request->logo,
            ];
-           if($request->file('logo')) {
-            $item['logo'] = $request->file('logo')->store('logo');
-           }
-           Setting::create($item);
+           // Cek dan simpan logo baru jika ada
+            if ($request->hasFile('logo')) {
+                // Hapus logo lama jika ada
+                if ($setting->logo && Storage::disk('public')->exists($setting->logo)) {
+                    Storage::disk('public')->delete($setting->logo);
+                }
+                // Simpan logo baru
+                $item['logo'] = $request->file('logo')->store('logo', 'public');
+            }
+            if($setting) {
+                $setting->update($item);
+            }else {
+                Setting::create($item);
+            }
           if ($item) {
             // Berhasil menyimpan data
-            return redirect()->back()->with('success', 'Kursus Berhasil Di Tambahkan');
+            return redirect()->back()->with('success', 'Setting Berhasil Di Simpan');
         } else {
             // Gagal menyimpan data
-            return redirect()->back()->with('error', 'Failed to create new record');
+            return redirect()->back()->with('error', 'Gagal');
         }
     }
 
@@ -71,8 +84,7 @@ class SettingController extends Controller
      */
     public function edit(string $id)
     {
-        $setting = Setting::find($id);
-        return view('setting.edit', compact('setting'));
+        
     }
 
     /**
@@ -80,41 +92,7 @@ class SettingController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'nama_toko' => 'required',
-            'alamat' => 'required',
-            'telepon' => 'required',
-            'email' => 'required|email',
-            'logo' => 'nullable|image|file|max:2048',
-        ]); 
-    
-        $setting = Setting::findOrFail($id);
-    
-        $item = [
-            'nama_toko' => $request->nama_toko,
-            'alamat' => $request->alamat,
-            'telepon' => $request->telepon,
-            'email' => $request->email,
-        ];
-    
-        // Cek dan simpan logo baru jika ada
-        if ($request->hasFile('logo')) {
-            // Hapus logo lama jika ada
-            if ($setting->logo && Storage::exists($setting->logo)) {
-                \Storage::delete($setting->logo);
-            }
-    
-            // Simpan logo baru
-            $item['logo'] = $request->file('logo')->store('logo');
-        }
-    
-        $updated = $setting->update($item);
-    
-        if ($updated) {
-            return redirect()->back()->with('success', 'Data berhasil disimpan.');
-        }
-    
-        return redirect()->back()->with('error', 'Data gagal disimpan.');
+        
     }
 
     /**
