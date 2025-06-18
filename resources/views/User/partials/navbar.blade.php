@@ -8,10 +8,16 @@
                   </button>
                   <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                       <div class="navbar-nav mx-auto">
+                          @guest
                           <a href="{{ url('/') }}" class="nav-item nav-link active">Beranda</a>
                           <a href="{{ url('produk') }}" class="nav-item nav-link">Produk</a>
-                          <a href="{{ url('keranjang') }}" class="nav-item nav-link">Keranjang</a>
                           <a href="{{ url('kontak') }}" class="nav-item nav-link">Kontak</a>
+                          @else
+                          <a href="{{ url('/') }}" class="nav-item nav-link active">Beranda</a>
+                          <a href="{{ url('produk') }}" class="nav-item nav-link">Produk</a>
+                          <a href="{{ route('keranjang.index') }}" class="nav-item nav-link">Keranjang</a>
+                          <a href="{{ url('kontak') }}" class="nav-item nav-link">Kontak</a>
+                          @endguest
                       </div>
                       <div class="d-flex m-3 me-0">
                         @guest

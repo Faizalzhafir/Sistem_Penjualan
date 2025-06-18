@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\KategoriController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Auth\LoginController as AuthLoginController;
 use App\Http\Controllers\Auth\RegisterController as AuthRegisterController;
+use App\Http\Controllers\User\KeranjangController;
 use App\Http\Controllers\User\ProdukController as UserProdukController;
 
 /*
@@ -29,9 +30,6 @@ Route::get('/user/dashboard', function () {
 })->name('user.dashboard');
 Route::get('/', function () {
     return view('user.index');
-});
-Route::get('/keranjang', function () {
-    return view('user.cart');
 });
 
 Route::get('/kontak', function () {
@@ -53,3 +51,5 @@ Route::resource('user', UserController::class);
 Route::resource('settings', SettingController::class);
 Route::resource('transaksi', TransaksiController::class);
 Route::resource('produk', UserProdukController::class);
+Route::resource('keranjang', KeranjangController::class);
+
