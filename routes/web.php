@@ -50,6 +50,7 @@ Route::resource('produk-list', ProdukController::class);
 Route::resource('user', UserController::class);
 Route::resource('settings', SettingController::class);
 Route::resource('transaksi', TransaksiController::class);
+Route::get('/transaksi/{transaksi}/nota', [TransaksiController::class, 'cetakNota'])->name('transaksi.nota');
 Route::resource('produk', UserProdukController::class);
 Route::resource('keranjang', KeranjangController::class);
 

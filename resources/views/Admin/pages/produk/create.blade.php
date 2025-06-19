@@ -54,6 +54,16 @@
                             </div>
 
                             <div class="form-group row mb-3">
+                                <label for="berat" class="col-sm-2 col-form-label">Berat Produk</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="berat" id="berat" class="form-control @error('berat') is-invalid @enderror" value="{{ old('berat') }}" placeholder="Berat Produk">
+                                    @error('berat')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-3">
                                 <label for="image" class="col-sm-2 col-form-label">Gambar</label>
                                 <div class="col-sm-10">
                                     <input type="file" name="image" id="image" class="form-control @error('image') is-invalid @enderror">

@@ -6,10 +6,6 @@
     <h4 class="page-title text-dark font-weight-medium mb-1">Transaksi</h4>
     @endsection
 
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6 col-lg-8">
@@ -19,18 +15,12 @@
                     </div>
                     <div class="card-body">
                             <div class="form-body">
-                                <label class="form-label">Daftar Produk dan Detail Penjualan </label>
                                 <div class="row">
                                     <div class="col-12">
+                                        <label class="form-label">Daftar Produk dan Detail Penjualan </label>
                                         <div class="input-group">
-                                            <div class="col-md-11">
-                                                <div class="form-group">
-                                                        <input type="search" class="form-control" placeholder="Masukkan kode Produk" id="inputKodeProduk">
-                                                    </div>
-                                                </div>
-                                            <div class="col-md-1">
-                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#primary-header-modal"><i class="far fa-plus-square"></i></button>
-                                            </div>
+                                            <label class="input-group-text btn btn-primary"data-bs-toggle="modal" data-bs-target="#primary-header-modal"><i class="far fa-plus-square"></i> Pilih</label>
+                                            <input type="search" class="form-control" placeholder="Masukkan kode Produk" id="inputKodeProduk">
                                         </div>
                                         <div id="primary-header-modal" class="modal fade" tabindex="-1" role="dialog"
                                             aria-labelledby="primary-header-modalLabel" aria-hidden="true">
@@ -50,6 +40,7 @@
                                                                         <th scope="col">No</th>
                                                                         <th scope="col">Kode</th>
                                                                         <th scope="col">Nama</th>
+                                                                        <th scope="col">Berat</th>
                                                                         <th scope="col">Kategori</th>
                                                                         <th scope="col">Diskon</th>
                                                                         <th scope="col">Stok</th>
@@ -62,6 +53,7 @@
                                                                         <td>{{ $loop->iteration }}</td>
                                                                         <td>{{ $item->kode }}</td>
                                                                         <td>{{ $item->nama }}</td>
+                                                                        <td>{{ $item->berat }}</td>
                                                                         <td>{{ $item->kategori->nama }}</td>
                                                                         <td>{{ $item->diskon }}%</td>
                                                                         <td>{{ $item->stok }}</td>
@@ -92,6 +84,16 @@
                                                     </div>
                                                 </div><!-- /.modal-content -->
                                             </div><!-- /.modal-dialog -->
+                                        </div>
+                                        <label class="form-label mt-2">Pembayaran </label>
+                                        <div class="input-group mb-3">
+                                            <label class="input-group-text" for="metode_pembayaran">Metode</label>
+                                            <select class="form-select" name="metode_pembayaran" id="metode_pembayaran" required>
+                                                <option value="">Pilih ...</option>
+                                                <option value="cash">Cash</option>
+                                                <option value="transfer">Transfer</option>
+                                                <option value="qris">Qris</option>
+                                            </select>
                                         </div>
                                         <hr>
                                     </div>
@@ -131,15 +133,15 @@
                         <h4 class="mb-0 text-white">Detail Penjualan</h4>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('transaksi.store') }}" method="POST" id="formTransaksi">
+                        <form action="{{ route('transaksi.store') }}" method="POST" id="formTransaksi" onsubmit="submitForm(event)">
+                            @csrf
                             <input type="hidden" name="produk_data" id="produk_data">
                             <input type="hidden" name="total" id="total_hidden">
                             <input type="hidden" name="total_diskon" id="total_diskon_hidden">
                             <input type="hidden" name="bayar" id="bayar_hidden">
                             <input type="hidden" name="diterima" id="diterima_hidden">
                             <input type="hidden" name="jenis_transaksi" value="offline">
-                            <input type="hidden" name="metode_pembayaran" value="cash">
-                            @csrf
+                            <input type="hidden" name="metode_pembayaran" id="metode_pembayaran_hidden">
                             <div class="form-group row">
                                 <label for="inputHorizontalSuccess"
                                     class="col-sm-4 col-form-label">Total</label>
@@ -165,7 +167,7 @@
                                 <label for="inputHorizontalSuccess"
                                     class="col-sm-4 col-form-label">Diterima</label>
                                 <div class="col-sm-8">
-                                    <input type="number" class="form-control" id="diterima">
+                                    <input type="number" class="form-control" id="diterima" required>
                                 </div>
                             </div>
                             <div class="mt-3 form-group row">
@@ -312,6 +314,9 @@
             document.getElementById('total_diskon_hidden').value = totalDiskon;
             document.getElementById('bayar_hidden').value = bayar;
 
+            const metode_pembayaran = document.getElementById('metode_pembayaran').value;
+            document.getElementById('metode_pembayaran_hidden').value = metode_pembayaran;
+
             // Cek kembali nilai diterima dan update kembalian
             const diterima = parseFloat(document.getElementById('diterima').value || 0);
             const kembali = diterima - bayar;
@@ -326,11 +331,34 @@
             });
         });
 
-        function submitForm() {
-            // update nilai hidden input dari field visible
-            hitungDetail(); // pastikan hitungan terakhir ter-update
-            document.getElementById('formTransaksi').submit();
+        function submitForm(event) {
+            event.preventDefault();
+
+        const diterima = document.getElementById('diterima').value;
+        const total = document.getElementById('total').value;
+        const metode_pembayaran = document.getElementById('metode_pembayaran').value;
+
+        // Validasi 'diterima' wajib diisi dan > 0
+        if (diterima.trim() === '' || isNaN(diterima) || parseFloat(diterima) <= 0) {
+            alert('Mohon masukkan jumlah uang yang diterima (minimal lebih dari 0) sebelum menyimpan transaksi.');
+            return;
         }
+
+        // Validasi 'metode_pembayaran' harus dipilih
+        if (!metode_pembayaran || metode_pembayaran.trim() === '') {
+            alert('Mohon pilih metode pembayaran sebelum menyimpan transaksi.');
+            return;
+        }
+
+         // Validasi 'diterima' wajib diisi dan > 0
+         if (total.trim() === '' || isNaN(total) || parseFloat(total) <= 0) {
+            alert('Mohon pilih produk terlebih dahulu sebelum menyimpan transaksi.');
+            return;
+        }
+
+        hitungDetail(); // Update nilai total, diskon, bayar, kembali
+        document.getElementById('formTransaksi').submit(); // Kirim form
+    }
 
     </script>
 @endpush

@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Transaksi;
 use App\Models\TransaksiDetail;
 use App\Models\Produk;
-use Illuminate\Support\Facades\DB;
+use App\Models\Setting;
+//use Illuminate\Support\Facades\DB;
 
 class TransaksiController extends Controller
 {
@@ -54,10 +55,25 @@ class TransaksiController extends Controller
                 'quantity' => $item['jumlah'],
                 'price' => $item['harga_jual'],
             ]);
+
+            // Kurangi stok
+            $produk = Produk::find($item['product_id']);
+            if ($produk->stok < $item['jumlah']) {
+                throw new \Exception("Stok produk {$produk->nama} tidak mencukupi");
+            }
+            $produk->stok -= $item['jumlah'];
+            $produk->save();
         }
     
-        return redirect()->back()->with('success', 'Transaksi berhasil disimpan!');
+        return redirect()->route('cek', ['id' => $transaksi->id])->with('success', 'Transaksi berhasil disimpan!');
         
+    }
+
+    public function show(Transaksi $transaksi) {
+
+        //$detail = TransaksiDetail::with('produk')->where('transaksi_id', $transaksi)->get();
+        $transaksi = Transaksi::with('user', 'details.produk')->findOrFail($transaksi->id);
+        return view('Admin.pages.transaksi.detail', compact('transaksi'));
     }
 
     public function cek()
@@ -65,9 +81,27 @@ class TransaksiController extends Controller
         return view('Admin.pages.transaksi.cek');
     }
 
+    public function cetakNota(Transaksi $transaksi)
+    {
+        $transaksi->load('user', 'details.produk');
+        $setting = Setting::first();
+
+        return view('Admin.pages.transaksi.nota', compact('transaksi', 'setting'));
+    }
+
     public function riwayat()
     {
+        $online = Transaksi::where('jenis_transaksi', 'online')->count();
+        $pending = Transaksi::where('status_pembayaran', 'pending')->count();
+        $lunas = Transaksi::where('status_pembayaran', 'lunas')->count();
+
         $transaksi = Transaksi::with('user', 'details')->get();
-        return view('Admin.pages.transaksi.riwayat', compact('transaksi'));
+        return view('Admin.pages.transaksi.riwayat', compact('transaksi', 'online', 'pending', 'lunas'));
+    }
+
+    public function destroy(Transaksi $transaksi)
+    {
+        $transaksi->delete();
+        return redirect()->route('riwayat')->with('success', 'Transaksi berhasil dihapus.');
     }
 }

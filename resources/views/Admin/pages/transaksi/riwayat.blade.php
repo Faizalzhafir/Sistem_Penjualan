@@ -6,6 +6,10 @@
     <h4 class="page-title text-dark font-weight-medium mb-1">Riwayat Transaksi</h4>
     @endsection
 
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-6 col-lg-4">
@@ -14,7 +18,7 @@
                         <div class="d-flex align-items-center">
                             <div>
                                 <div class="d-inline-flex align-items-center">
-                                    <h2 class="text-white mb-1 font-weight-medium">236</h2>
+                                    <h2 class="text-white mb-1 font-weight-medium">{{ $online }}</h2>
                                         <span
                                             class="badge bg-primary font-12 text-white font-weight-medium rounded-pill ms-2 d-lg-block d-md-none">+18.33%</span>
                                         </div>
@@ -34,7 +38,7 @@
                         <div class="d-flex align-items-center">
                             <div>
                                 <div class="d-inline-flex align-items-center">
-                                    <h2 class="text-white mb-1 font-weight-medium">236</h2>
+                                    <h2 class="text-white mb-1 font-weight-medium">{{ $pending }}</h2>
                                         <span
                                             class="badge bg-primary font-12 text-white font-weight-medium rounded-pill ms-2 d-lg-block d-md-none">+18.33%</span>
                                         </div>
@@ -54,7 +58,7 @@
                         <div class="d-flex align-items-center">
                             <div>
                                 <div class="d-inline-flex align-items-center">
-                                    <h2 class="text-white mb-1 font-weight-medium">236</h2>
+                                    <h2 class="text-white mb-1 font-weight-medium">{{ $lunas }}</h2>
                                         <span
                                             class="badge bg-primary font-12 text-white font-weight-medium rounded-pill ms-2 d-lg-block d-md-none">+18.33%</span>
                                         </div>
@@ -95,6 +99,7 @@
                                     <th>Total</th>
                                     <th>Pembayaran</th>
                                     <th>Satus</th>
+                                    <th class="sorting_disabled">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -106,6 +111,20 @@
                                         <td>Rp {{ number_format($item->total, 0, ',', '.') }}</td>
                                         <td>{{ Str::title(str_replace('_', ' ', $item->metode_pembayaran)) }}</td>
                                         <td>{{ Str::title(str_replace('_', ' ', $item->status_pembayaran)) }}</td>
+                                        <td>
+                                            <a class="dropdown-toggle"
+                                                data-bs-toggle="dropdown"  href="#" aria-haspopup="true" aria-expanded="false"><i data-feather="more-vertical"></i>
+                                            </a>
+                                            <div class="dropdown-menu">
+                                                <a class="text-primary dropdown-item" href="{{ route('transaksi.show', $item) }}"><i data-feather="eye"></i> Lihat Detail</a>
+                                                <div class="dropdown-divider"></div>
+                                                <form action="{{ route('transaksi.destroy', $item) }}" method="post">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="text-primary dropdown-item" onclick="return confirm('Yakin ingin menghapus transaksi ini?')"><i data-feather="trash"></i> Hapus Data</button>
+                                                </form>
+                                            </div>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
