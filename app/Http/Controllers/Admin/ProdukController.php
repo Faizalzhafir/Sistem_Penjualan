@@ -65,7 +65,8 @@ class ProdukController extends Controller
     {
         $validated = $request->validate([
             'kategori_id' => 'required|exists:tb_kategori,id',
-            'nama' => 'required|string|max:255',
+            'nama' => 'required|string|max:255|unique:tb_produk,nama',
+            'berat' => 'required|string|max:20',
             'harga_beli' => 'required|integer',
             'harga_jual' => 'required|integer',
             'diskon' => 'nullable|integer',
@@ -99,6 +100,7 @@ class ProdukController extends Controller
             'kategori_id' => $validated['kategori_id'],
             'kode' => $kodeBaru,
             'nama' => $validated['nama'],
+            'berat' => $validated['berat'],
             'harga_beli' => $validated['harga_beli'],
             'harga_jual' => $validated['harga_jual'],
             'diskon' => $validated['diskon'] ?? 0,
@@ -112,7 +114,7 @@ class ProdukController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Produk $produk)
+    public function show(Produk $produk_list)
     {
         //
     }
@@ -120,20 +122,21 @@ class ProdukController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Produk $produk)
+    public function edit(Produk $produk_list)
     {
         $kategori = Kategori::all();
-        return view('admin.pages.produk.edit', compact('produk', 'kategori'));
+        return view('admin.pages.produk.edit', compact('produk_list', 'kategori'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Produk $produk)
+    public function update(Request $request, Produk $produk_list)
     {
         $validated = $request->validate([
             'kategori_id' => 'required|exists:tb_kategori,id',
-            'nama' => 'required|string|max:255|unique:tb_produk,nama',
+            'nama' => 'required|string|max:255',
+            'berat' => 'required|string|max:20',
             'harga_beli' => 'required|integer',
             'harga_jual' => 'required|integer',
             'diskon' => 'nullable|integer',
@@ -144,25 +147,27 @@ class ProdukController extends Controller
         // Cek dan upload gambar jika ada
         if ($request->hasFile('image')) {
             // Hapus gambar lama jika ada
-            if ($produk->image && file_exists(public_path('uploads/produk/' . $produk->image))) {
-                unlink(public_path('uploads/produk/' . $produk->image));
+            if ($produk_list->image && file_exists(public_path('uploads/produk/' . $produk_list->image))) {
+                unlink(public_path('uploads/produk/' . $produk_list->image));
             }
     
             // Simpan gambar baru
             $imageName = time() . '_' . uniqid() . '.' . $request->image->getClientOriginalExtension();
             $request->image->move(public_path('uploads/produk'), $imageName);
-            $produk->image = $imageName;
+            $produk_list->image = $imageName;
         }
     
         // Update field lainnya
-        $produk->kategori_id = $validated['kategori_id'];
-        $produk->nama = $validated['nama'];
-        $produk->harga_beli = $validated['harga_beli'];
-        $produk->harga_jual = $validated['harga_jual'];
-        $produk->diskon = $validated['diskon'] ?? 0;
-        $produk->stok = $validated['stok'] ?? 0;
+        $produk_list->kategori_id = $validated['kategori_id'];
+        $produk_list->nama = $validated['nama'];
+        //$produk_list->kode =  $produk_list->kode;
+        $produk_list->berat = $validated['berat'];
+        $produk_list->harga_beli = $validated['harga_beli'];
+        $produk_list->harga_jual = $validated['harga_jual'];
+        $produk_list->diskon = $validated['diskon'] ?? 0;
+        $produk_list->stok = $validated['stok'] ?? 0;
     
-        $produk->save();
+        $produk_list->save();
     
         return redirect()->route('produk-list.index')->with('success', 'Produk berhasil diupdate');
     }
@@ -170,7 +175,7 @@ class ProdukController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Produk $produk)
+    public function destroy(Produk $produk_list)
     {
         $produk->delete();
         return redirect()->route('produk-list.index')->with('success', 'Produk berhasil dihapus.');

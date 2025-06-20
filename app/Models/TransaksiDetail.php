@@ -14,7 +14,7 @@ class TransaksiDetail extends Model
 
     public function produk()
     {
-        return $this->belongsTo(Produk::class, 'product_id');
+        return $this->belongsTo(Produk::class, 'product_id', 'id');
     }
 
     public function details()

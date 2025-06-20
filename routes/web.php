@@ -42,10 +42,15 @@ Route::get('/logout', function () {
 Route::resource('login', AuthLoginController::class);
 Route::resource('register', AuthRegisterController::class);
 Route::resource('produk', UserProdukController::class);
-Route::resource('keranjang', KeranjangController::class);
+
+
+Route::middleware(['auth', 'cek.role:user'])->group(function (){
+    Route::resource('keranjang', KeranjangController::class);
+});
 Route::middleware(['auth', 'cek.role:admin,kasir'])->group(function (){
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('transaksi', TransaksiController::class);
+    Route::get('/transaksi/{transaksi}/nota', [TransaksiController::class, 'cetakNota'])->name('transaksi.nota');
     Route::get('cek', [TransaksiController::class, 'cek'])->name('cek');
     Route::get('riwayat', [TransaksiController::class, 'riwayat'])->name('riwayat');
 });

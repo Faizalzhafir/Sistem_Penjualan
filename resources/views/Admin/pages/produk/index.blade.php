@@ -78,6 +78,7 @@
                                         <th>Gambar</th>
                                         <th>Kode</th>
                                         <th>Nama</th>
+                                        <th>Berat</th>
                                         <th>Kategori</th>
                                         <th>Harga Beli</th>
                                         <th>Harga Jual</th>
@@ -100,6 +101,7 @@
                                         </td>
                                         <td>{{ $item->kode }}</td>
                                         <td>{{ $item->nama }}</td>
+                                        <td>{{ $item->berat }}</td>
                                         <td>{{ $item->kategori->nama }}</td>
                                         <td>Rp {{ number_format($item->harga_beli, 0, ',', '.') }}</td>
                                         <td>Rp {{ number_format($item->harga_jual, 0, ',', '.') }}</td>
