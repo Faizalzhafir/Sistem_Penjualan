@@ -43,6 +43,7 @@ class UserController extends Controller
             'email'    => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role'     => $validated['role'],
+            'status'   => 'aktif'
         ]);
 
         return redirect()->route('user.index')->with('success', 'User berhasil ditambahkan');
@@ -82,6 +83,7 @@ class UserController extends Controller
             'email'    => $validated['email'],
             'password' => $validated['password'] ? Hash::make($validated['password']) : $user->password,
             'role'     => $validated['role'],
+            'status'   => $user->status
         ]);
 
         return redirect()->route('user.index')->with('success', 'User berhasil diperbarui');
@@ -94,5 +96,17 @@ class UserController extends Controller
     {
         $user->delete();
         return redirect()->route('user.index')->with('success', 'User berhasil dihapus');
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:pending,aktif,tolak',
+        ]);
+        $user = User::findOrFail($id);
+        $user->status = $request->status;
+        $user->save();
+
+        return back()->with('success', 'Status user berhasil di ubah');
     }
 }

@@ -46,7 +46,8 @@ class RegisterController extends Controller
             'name'=>$request->name,
             'email'=>$request->email,
             'password'=>Hash::make($request->password),
-            'role'=> $request->role ?? 'user'
+            'role'=> $request->role ?? 'user',
+            'status'=>'pending'
         ]);
         return redirect()->route('login.index')->with('success', 'Register Berhasil Silahkan Untuk Login');
     }

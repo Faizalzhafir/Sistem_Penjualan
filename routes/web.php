@@ -41,15 +41,19 @@ Route::get('/logout', function () {
 })->name('logout');
 Route::resource('login', AuthLoginController::class);
 Route::resource('register', AuthRegisterController::class);
-
-Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-Route::get('cek', [TransaksiController::class, 'cek'])->name('cek');
-Route::get('riwayat', [TransaksiController::class, 'riwayat'])->name('riwayat');
-Route::resource('kategori', KategoriController::class);
-Route::resource('produk-list', ProdukController::class);
-Route::resource('user', UserController::class);
-Route::resource('settings', SettingController::class);
-Route::resource('transaksi', TransaksiController::class);
 Route::resource('produk', UserProdukController::class);
 Route::resource('keranjang', KeranjangController::class);
+Route::middleware(['auth', 'cek.role:admin,kasir'])->group(function (){
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('transaksi', TransaksiController::class);
+    Route::get('cek', [TransaksiController::class, 'cek'])->name('cek');
+    Route::get('riwayat', [TransaksiController::class, 'riwayat'])->name('riwayat');
+});
+Route::middleware(['auth', 'cek.role:admin'])->group(function (){
+    Route::resource('kategori', KategoriController::class);
+    Route::resource('produk-list', ProdukController::class);
+    Route::resource('user', UserController::class);
+    Route::put('/user/{id}/status', [UserController::class, 'updateStatus'])->name('user.updateStatus');
+    Route::resource('settings', SettingController::class);
+});
 

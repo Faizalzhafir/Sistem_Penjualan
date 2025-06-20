@@ -40,12 +40,21 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate(); // menghindari session fixation
             $user = Auth::user();
-
+            //Jika status pending
+            if ($user->status === 'pending') {
+                Auth::logout();
+                return back()->withErrors(['email'=>'Akun anda masih dalam proses persetujuan admin']);
+            }
+            //Jika status tolak
+            if ($user->status === 'tolak') {
+                Auth::logout();
+                return back()->withErrors(['email'=>'Register anda ditolak. Mohon hubungi warung kami']);
+            }
             switch ($user->role) {
                 case 'admin':
                     return redirect()->route('dashboard'); // ubah ke route kamu
                 case 'kasir':
-                    return redirect()->route('kasir.dashboard');
+                    return redirect()->route('dashboard');
                 case 'user':
                     return redirect('/');
                 default:
