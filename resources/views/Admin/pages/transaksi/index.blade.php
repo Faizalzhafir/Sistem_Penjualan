@@ -339,6 +339,12 @@
         const metode_pembayaran = document.getElementById('metode_pembayaran').value;
 
         // Validasi 'diterima' wajib diisi dan > 0
+        if (total.trim() === '' || isNaN(total) || parseFloat(total) <= 0) {
+            alert('Mohon pilih produk terlebih dahulu sebelum menyimpan transaksi.');
+            return;
+        }
+        
+        // Validasi 'diterima' wajib diisi dan > 0
         if (diterima.trim() === '' || isNaN(diterima) || parseFloat(diterima) <= 0) {
             alert('Mohon masukkan jumlah uang yang diterima (minimal lebih dari 0) sebelum menyimpan transaksi.');
             return;
@@ -347,12 +353,6 @@
         // Validasi 'metode_pembayaran' harus dipilih
         if (!metode_pembayaran || metode_pembayaran.trim() === '') {
             alert('Mohon pilih metode pembayaran sebelum menyimpan transaksi.');
-            return;
-        }
-
-         // Validasi 'diterima' wajib diisi dan > 0
-         if (total.trim() === '' || isNaN(total) || parseFloat(total) <= 0) {
-            alert('Mohon pilih produk terlebih dahulu sebelum menyimpan transaksi.');
             return;
         }
 

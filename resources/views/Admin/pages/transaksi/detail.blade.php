@@ -22,8 +22,14 @@
         <div class="col-md-6 col-lg-7">
             <div class="card" >
                 <div class="card-body">
-                    <h4 class="card-title "><i data-feather="clipboard"></i> | Detail Transaksi</h4>
-                    <a href="{{ route('transaksi.nota', $transaksi->id) }}" class="btn btn-success mt-2 mb-2" target="_blank">Cetak Nota</a>
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <h4 class="card-title "><i data-feather="clipboard"></i> | Detail Transaksi</h4>
+                        </div>
+                        <div class="ms-auto mt-md-3 mt-lg-0">
+                            <a href="{{ route('transaksi.nota', $transaksi->id) }}" class="btn btn-primary mt-2 mb-2" target="_blank">Cetak Nota</a>
+                        </div>
+                    </div>
                     <hr>
                     <h6 class="card-title ">Tanggal Transaksi : <span class="">{{ $transaksi->created_at->format('d M Y H:i') }}</span></h6>
                     <h6 class="card-title ">Kode Transaksi : <span class="">{{ $transaksi->kode_transaksi }}</span></h6>
@@ -54,16 +60,13 @@
                                     <td colspan="3">Subtotal</td>
                                     <td>Rp {{ number_format($transaksi->total, 0, ',', '.') }}</td>
                                 </tr>
-                                @php
-                                    $totalfinal = $transaksi->total - $transaksi->total_diskon
-                                @endphp
                                 <tr>
                                     <td colspan="3">Total Diskon</td>
                                     <td>Rp {{ number_format($transaksi->total_diskon, 0, ',', '.') }}</td>
                                 </tr>
                                 <tr>
                                     <td colspan="3">Total</td>
-                                    <td>Rp {{ number_format($totalfinal, 0, ',', '.') }}</td>
+                                    <td>Rp {{ number_format($transaksi->bayar, 0, ',', '.') }}</td>
                                 </tr>
                             </tfoot>
                         </table>

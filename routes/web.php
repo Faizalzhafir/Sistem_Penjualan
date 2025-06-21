@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ProdukController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\KategoriController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\Auth\LoginController as AuthLoginController;
 use App\Http\Controllers\Auth\RegisterController as AuthRegisterController;
 use App\Http\Controllers\User\KeranjangController;
@@ -53,6 +54,9 @@ Route::middleware(['auth', 'cek.role:admin,kasir'])->group(function (){
     Route::get('/transaksi/{transaksi}/nota', [TransaksiController::class, 'cetakNota'])->name('transaksi.nota');
     Route::get('cek', [TransaksiController::class, 'cek'])->name('cek');
     Route::get('riwayat', [TransaksiController::class, 'riwayat'])->name('riwayat');
+    Route::get('laporan', [LaporanController::class, 'laporan'])->name('laporan');
+    Route::get('/laporan/pdf', [LaporanController::class, 'cetakPDF'])->name('laporan.pdf');
+    Route::get('/laporan/export-excel', [LaporanController::class, 'exportExcel'])->name('laporan.export.excel');
 });
 Route::middleware(['auth', 'cek.role:admin'])->group(function (){
     Route::resource('kategori', KategoriController::class);
