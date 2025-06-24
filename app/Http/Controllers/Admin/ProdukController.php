@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Produk;
 use App\Models\Kategori;
+use Illuminate\Support\Facades\Http;
 
 class ProdukController extends Controller
 {
@@ -14,38 +15,30 @@ class ProdukController extends Controller
      */
     public function index(Request $request)
     {
-        $kategori = Kategori::all(); // untuk dropdown kategori
+        $queryParams = [];
 
-        $produk = Produk::with('kategori');
-
-        // Filter Kategori
         if ($request->filled('kategori_id')) {
-            $produk->where('kategori_id', $request->kategori_id);
+            $queryParams['kategori_id'] = $request->kategori_id;
         }
 
-        // Filter Status Stok
         if ($request->filled('stok_status')) {
-            if ($request->stok_status === 'kosong') {
-                $produk->where('stok', 0);
-            } elseif ($request->stok_status === 'sedikit') {
-                $produk->whereBetween('stok', [1, 10]);
-            } elseif ($request->stok_status === 'tersedia') {
-                $produk->where('stok', '>', 10);
-            }
+            $queryParams['stok_status'] = $request->stok_status;
         }
 
-        // Filter Diskon
         if ($request->filled('diskon_status')) {
-            if ($request->diskon_status === 'ada') {
-                $produk->where('diskon', '>', 0);
-            } elseif ($request->diskon_status === 'tidak') {
-                $produk->where('diskon', 0);
-            }
+            $queryParams['diskon_status'] = $request->diskon_status;
+        }
+        
+        $response = Http::get(config('app.api_url') . '/api/produk' , $queryParams);
+
+        if ($response->successful()) {
+            $produk = $response->json()['data'];
+
+            $kategori = Http::get(config('app.api_url') . '/api/kategori')->json()['data'];
+            return view('admin.pages.produk.index', compact('produk', 'kategori'));
         }
 
-        $produk = $produk->get();
-
-        return view('admin.pages.produk.index', compact('produk', 'kategori'));
+        return back()->with('error', 'Gagal memuat data produk.');
     }
 
 
@@ -64,52 +57,51 @@ class ProdukController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'kategori_id' => 'required|exists:tb_kategori,id',
-            'nama' => 'required|string|max:255|unique:tb_produk,nama',
+            'kategori_id' => 'required',
+            'nama' => 'required|string|max:255',
             'berat' => 'required|string|max:20',
             'harga_beli' => 'required|integer',
             'harga_jual' => 'required|integer',
             'diskon' => 'nullable|integer',
             'stok' => 'nullable|integer',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // max 2MB
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
-    
-        // Buat kode produk otomatis
-        $prefix = strtoupper(substr(
-            Kategori::find($validated['kategori_id'])->nama ?? 'XXX',
-            0, 3
-        ));
-    
-        $lastKode = Produk::where('kode', 'like', "$prefix%")->max('kode');
-        $newNumber = str_pad(
-            $lastKode ? (intval(substr($lastKode, strlen($prefix))) + 1) : 1,
-            6, '0', STR_PAD_LEFT
-        );
-    
-        $kodeBaru = $prefix . $newNumber;
-    
-        // Proses upload gambar jika ada
-        $imageName = null;
-        if ($request->hasFile('image')) {
-            $imageName = time() . '_' . uniqid() . '.' . $request->image->getClientOriginalExtension();
-            $request->file('image')->storeAs('public/produk', $imageName);
+
+        // Siapkan array multipart
+        $multipart = [];
+
+        // Tambahkan input biasa
+        foreach ($validated as $key => $value) {
+            if ($key !== 'image') {
+                $multipart[] = [
+                    'name' => $key,
+                    'contents' => $value,
+                ];
+            }
         }
-    
-        // Simpan produk
-        Produk::create([
-            'kategori_id' => $validated['kategori_id'],
-            'kode' => $kodeBaru,
-            'nama' => $validated['nama'],
-            'berat' => $validated['berat'],
-            'harga_beli' => $validated['harga_beli'],
-            'harga_jual' => $validated['harga_jual'],
-            'diskon' => $validated['diskon'] ?? 0,
-            'stok' => $validated['stok'] ?? 0,
-            'image' => $imageName,
-        ]);
-    
-        return redirect()->route('produk-list.index')->with('success', 'Produk berhasil ditambahkan');
+
+        // Tambahkan file jika ada
+        if ($request->hasFile('image')) {
+            $multipart[] = [
+                'name' => 'image',
+                'contents' => fopen($request->file('image')->getRealPath(), 'r'),
+                'filename' => $request->file('image')->getClientOriginalName(),
+            ];
+        }
+
+        // Kirim ke API dengan multipart
+        $response = Http::asMultipart()
+            ->timeout(10)
+            ->post(config('app.api_url') . '/api/produk', $multipart);
+
+        if ($response->successful()) {
+            return redirect()->route('produk-list.index')
+                ->with('success', 'Produk berhasil ditambahkan via API');
+        }
+
+        return back()->with('error', 'Gagal menambahkan produk: ' . $response->body());
     }
+
 
     /**
      * Display the specified resource.
@@ -122,62 +114,78 @@ class ProdukController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Produk $produk_list)
+    public function edit($id)
     {
-        $kategori = Kategori::all();
-        return view('admin.pages.produk.edit', compact('produk_list', 'kategori'));
+        $response = Http::get(config('app.api_url') . "/api/produk/{$id}");
+
+        if ($response->successful()) {
+            $produk_list = $response->json()['data'];
+            $kategori = Http::get(config('app.api_url') . '/api/kategori')->json()['data'];
+            return view('admin.pages.produk.edit', compact('produk_list', 'kategori'));
+        }
+
+        return back()->with('error', 'Produk tidak ditemukan.');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Produk $produk_list)
+    public function update(Request $request, $id)
     {
+        $multipart = [];
+
         $validated = $request->validate([
-            'kategori_id' => 'required|exists:tb_kategori,id',
+            'kategori_id' => 'required',
             'nama' => 'required|string|max:255',
             'berat' => 'required|string|max:20',
             'harga_beli' => 'required|integer',
             'harga_jual' => 'required|integer',
             'diskon' => 'nullable|integer',
             'stok' => 'nullable|integer',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
     
-        // Cek dan upload gambar jika ada
-        if ($request->hasFile('image')) {
-            // Hapus gambar lama jika ada
-            if ($produk_list->image && file_exists(public_path('uploads/produk/' . $produk_list->image))) {
-                unlink(public_path('uploads/produk/' . $produk_list->image));
+        foreach ($validated as $key => $value) {
+            if ($key !== 'image') {
+                $multipart[] = [
+                    'name' => $key,
+                    'contents' => (string) $value,
+                ];
             }
-    
-            // Simpan gambar baru
-            $imageName = time() . '_' . uniqid() . '.' . $request->image->getClientOriginalExtension();
-            $request->image->move(public_path('uploads/produk'), $imageName);
-            $produk_list->image = $imageName;
+        }
+        
+        // Tambahkan file jika ada
+        if ($request->hasFile('image')) {
+            $multipart[] = [
+                'name'     => 'image',
+                'contents' => fopen($request->file('image')->getPathname(), 'r'),
+                'filename' => $request->file('image')->getClientOriginalName(),
+            ];
+        }
+        
+        // Kirim dengan spoofing PUT
+        $response = Http::asMultipart()->post(
+            config('app.api_url') . "/api/produk/{$id}?_method=PUT",
+            $multipart
+        );
+
+        if ($response->successful()) {
+            return redirect()->route('produk-list.index')->with('success', 'Produk berhasil diupdate via API');
         }
     
-        // Update field lainnya
-        $produk_list->kategori_id = $validated['kategori_id'];
-        $produk_list->nama = $validated['nama'];
-        //$produk_list->kode =  $produk_list->kode;
-        $produk_list->berat = $validated['berat'];
-        $produk_list->harga_beli = $validated['harga_beli'];
-        $produk_list->harga_jual = $validated['harga_jual'];
-        $produk_list->diskon = $validated['diskon'] ?? 0;
-        $produk_list->stok = $validated['stok'] ?? 0;
-    
-        $produk_list->save();
-    
-        return redirect()->route('produk-list.index')->with('success', 'Produk berhasil diupdate');
+        return back()->with('error', 'Gagal update: ' . $response->body());
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Produk $produk_list)
+    public function destroy($id)
     {
-        $produk->delete();
-        return redirect()->route('produk-list.index')->with('success', 'Produk berhasil dihapus.');
+         $response = Http::delete(config('app.api_url') . "/api/produk/{$id}");
+
+        if ($response->successful()) {
+            return redirect()->route('produk-list.index')->with('success', 'Produk berhasil dihapus.');
+        }
+
+        return back()->with('error', 'Gagal menghapus produk.');
     }
 }

@@ -8,77 +8,76 @@ use App\Models\Transaksi;
 use App\Models\TransaksiDetail;
 use App\Models\Produk;
 use App\Models\Setting;
+use Illuminate\Support\Facades\Http;
 //use Illuminate\Support\Facades\DB;
 
 class TransaksiController extends Controller
 {
     public function index()
     {
-        $produk = Produk::with('kategori')->get();
-        return view('Admin.pages.transaksi.index', compact('produk'));
+        $response = Http::get(config('app.api_url') . '/api/produk');
+
+        if ($response->successful()) {
+            $produk = $response->json()['data'];
+            return view('Admin.pages.transaksi.index', compact('produk'));
+        }
+    
+        return back()->with('error', 'Gagal memuat data produk dari API.');
     }
 
     public function store(Request $request)
     {
         //dd($request->all());
-
         $request->validate([
             'produk_data' => 'required|json',
             'total' => 'required|numeric',
             'bayar' => 'required|numeric',
             'diterima' => 'required|numeric',
+            'jenis_transaksi' => 'required',
+            'metode_pembayaran' => 'required',
         ]);
-    
-        $produkData = json_decode($request->produk_data, true);
-    
-        // Buat kode transaksi otomatis
-        $kodeTransaksi = 'TRX' . now()->format('YmdHis') . rand(100, 999);
-    
-        // Simpan ke transaksi utama
-        $transaksi = Transaksi::create([
+
+        // Kirim data ke API menggunakan HTTP client
+        $response = Http::timeout(10)->post(config('app.api_url') . '/api/transaksi', [
             'user_id' => auth()->id(),
-            'kode_transaksi' => $kodeTransaksi,
+            'produk_data' => json_decode($request->produk_data, true),
             'total' => $request->total,
             'total_diskon' => $request->total_diskon,
             'bayar' => $request->bayar,
             'diterima' => $request->diterima,
             'jenis_transaksi' => $request->jenis_transaksi,
             'metode_pembayaran' => $request->metode_pembayaran,
-            'status_pembayaran' => 'lunas',
         ]);
-    
-        // Simpan detail produk
-        foreach ($produkData as $item) {
-            TransaksiDetail::create([
-                'transaksi_id' => $transaksi->id,
-                'product_id' => $item['product_id'],
-                'quantity' => $item['jumlah'],
-                'price' => $item['harga_jual'],
-            ]);
 
-            // Kurangi stok
-            $produk = Produk::find($item['product_id']);
-            if ($produk->stok < $item['jumlah']) {
-                throw new \Exception("Stok produk {$produk->nama} tidak mencukupi");
-            }
-            $produk->stok -= $item['jumlah'];
-            $produk->save();
-        }
-    
-        return redirect()->route('cek', ['id' => $transaksi->id])->with('success', 'Transaksi berhasil disimpan!');
+        dd($response->json());
+
+        if ($response->successful()) {
+            $data = $response->json();
+            return redirect()->route('cek', ['id' => $data['id']])
+                ->with('success', 'Transaksi berhasil disimpan melalui API!');
+        } else {
+            return back()->with('error', 'Transaksi gagal: ' . $response->body());
+        } 
         
     }
 
-    public function show(Transaksi $transaksi) {
+    public function show($id) {
 
         //$detail = TransaksiDetail::with('produk')->where('transaksi_id', $transaksi)->get();
-        $transaksi = Transaksi::with('user', 'details.produk')->findOrFail($transaksi->id);
-        return view('Admin.pages.transaksi.detail', compact('transaksi'));
+        $response = Http::get(config('app.api_url') . "/api/transaksi/{$id}");
+
+        if ($response->successful()) {
+            $transaksi = $response->json()['data'];
+            return view('Admin.pages.transaksi.detail', compact('transaksi'));
+        }
+
+        return back()->with('error', 'Detail transaksi tidak ditemukan.');
     }
 
-    public function cek()
+    public function cek($id)
     {
-        return view('Admin.pages.transaksi.cek');
+        $transaksi = Transaksi::with('user', 'details.produk')->findOrFail($id);
+        return view('Admin.pages.transaksi.cek', compact('transaksi'));
     }
 
     public function cetakNota(Transaksi $transaksi)
@@ -99,9 +98,16 @@ class TransaksiController extends Controller
         return view('Admin.pages.transaksi.riwayat', compact('transaksi', 'online', 'pending', 'lunas'));
     }
 
-    public function destroy(Transaksi $transaksi)
+    public function destroy($id)
     {
-        $transaksi->delete();
-        return redirect()->route('riwayat')->with('success', 'Transaksi berhasil dihapus.');
+       $response = Http::delete(config('app.api_url') . "/api/transaksi/{$id}");
+
+        if ($response->successful()) {
+            return redirect()->route('riwayat')->with('success', 'Transaksi berhasil dihapus.');
+        }
+        
+        //dd($response);
+
+        return back()->with('error', 'Gagal menghapus transaksi.');
     }
 }

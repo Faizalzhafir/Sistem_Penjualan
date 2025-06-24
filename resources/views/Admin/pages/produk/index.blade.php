@@ -37,8 +37,8 @@
                                                 class="custom-select form-control bg-dark text-white custom-radius custom-shadow border-0">
                                                 <option value=""> Semua Kategori </option>
                                                 @foreach($kategori as $item)
-                                                    <option value="{{ $item->id }}" {{ request('kategori_id') == $item->id ? 'selected' : '' }}>
-                                                        {{ $item->nama }}
+                                                    <option value="{{ $item['id'] }}" {{ request('kategori_id') == $item['id'] ? 'selected' : '' }}>
+                                                        {{ $item['nama'] }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -93,35 +93,35 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>
-                                            @if($item->image)
-                                                <img src="{{ asset('storage/produk/' . $item->image) }}" alt="Gambar" style="max-width: 60px;">
+                                            @if($item['image'])
+                                                <img src="{{ asset('storage/produk/' . $item['image']) }}" alt="Gambar" style="max-width: 60px;">
                                             @else
                                                 <small class="text-muted">-</small>
                                             @endif
                                         </td>
-                                        <td>{{ $item->kode }}</td>
-                                        <td>{{ $item->nama }}</td>
-                                        <td>{{ $item->berat }}</td>
-                                        <td>{{ $item->kategori->nama }}</td>
-                                        <td>Rp {{ number_format($item->harga_beli, 0, ',', '.') }}</td>
-                                        <td>Rp {{ number_format($item->harga_jual, 0, ',', '.') }}</td>
-                                        <td>{{ $item->diskon }}%</td>
-                                        <td>{{ $item->stok }}</td>
+                                        <td>{{ $item['kode'] }}</td>
+                                        <td>{{ $item['nama'] }}</td>
+                                        <td>{{ $item['berat'] }}</td>
+                                        <td>{{ $item['kategori']['nama'] }}</td>
+                                        <td>Rp {{ number_format($item['harga_beli'], 0, ',', '.') }}</td>
+                                        <td>Rp {{ number_format($item['harga_jual'], 0, ',', '.') }}</td>
+                                        <td>{{ $item['diskon'] }}%</td>
+                                        <td>{{ $item['stok'] }}</td>
                                         <td>
-                                            @if ($item->stok >= 1 && $item->stok <= 10)
+                                            @if ($item['stok'] >= 1 && $item['stok'] <= 10)
                                                 <span class="badge text-bg-warning">SEDIKIT</span>
-                                            @elseif ($item->stok > 10)
+                                            @elseif ($item['stok'] > 10)
                                                 <span class="badge text-bg-success">TERSEDIA</span>
                                             @else
                                                 <span class="badge text-bg-danger">KOSONG</span>
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ route('produk-list.edit', $item) }}" class="btn waves-effect waves-light btn-outline-primary"><i class="far fa-edit"></i></a>
-                                            <form action="{{ route('produk-list.destroy', $item) }}" method="POST" style="display:inline;">
+                                            <a href="{{ route('produk-list.edit', $item['id']) }}" class="btn waves-effect waves-light btn-outline-primary"><i class="far fa-edit"></i></a>
+                                            <form action="{{ route('produk-list.destroy', $item['id']) }}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button onclick="return confirm('Yakin ingin menghapus produk {{ $item->nama }}?')" class="btn waves-effect waves-light btn-outline-danger"><i class="far fa-trash-alt"></i></button>
+                                                <button onclick="return confirm('Yakin ingin menghapus produk {{ $item['nama'] }}?')" class="btn waves-effect waves-light btn-outline-danger"><i class="far fa-trash-alt"></i></button>
                                             </form>
                                         </td>
                                     </tr>

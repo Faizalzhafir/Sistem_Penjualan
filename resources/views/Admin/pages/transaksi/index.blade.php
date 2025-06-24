@@ -51,21 +51,21 @@
                                                                     @foreach ($produk as $item)
                                                                     <tr>
                                                                         <td>{{ $loop->iteration }}</td>
-                                                                        <td>{{ $item->kode }}</td>
-                                                                        <td>{{ $item->nama }}</td>
-                                                                        <td>{{ $item->berat }}</td>
-                                                                        <td>{{ $item->kategori->nama }}</td>
-                                                                        <td>{{ $item->diskon }}%</td>
-                                                                        <td>{{ $item->stok }}</td>
+                                                                        <td>{{ $item['kode'] }}</td>
+                                                                        <td>{{ $item['nama'] }}</td>
+                                                                        <td>{{ $item['berat'] }}</td>
+                                                                        <td>{{ $item['kategori']['nama'] }}</td>
+                                                                        <td>{{ $item['diskon'] }}%</td>
+                                                                        <td>{{ $item['stok'] }}</td>
                                                                         <td>
                                                                         @php
                                                                             $produkJson = json_encode([
-                                                                                "id" => $item->id,
-                                                                                "kode" => $item->kode,
-                                                                                "nama" => $item->nama,
-                                                                                "kategori" => $item->kategori->nama,
-                                                                                "diskon" => $item->diskon,
-                                                                                "harga_jual" => $item->harga_jual,
+                                                                                "id" => $item['id'],
+                                                                                "kode" => $item['kode'],
+                                                                                "nama" => $item['nama'],
+                                                                                "kategori" => ['nama' => $item['kategori']['nama']],
+                                                                                "diskon" => $item['diskon'],
+                                                                                "harga_jual" => $item['harga_jual'],
                                                                             ]);
                                                                         @endphp
 
@@ -239,7 +239,7 @@
                 product_id: dataProduk.id,
                 kode: dataProduk.kode,
                 nama: dataProduk.nama,
-                kategori: dataProduk.kategori,
+                kategori: dataProduk.kategori.nama,
                 diskon: dataProduk.diskon,
                 harga_jual: dataProduk.harga_jual,
                 jumlah: 1,

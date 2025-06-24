@@ -42,34 +42,34 @@
                         @foreach($users as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item->name }}</td>
-                            <td>{{ $item->email }}</td>
-                            <td>{{ ucfirst($item->role) }}</td>
+                            <td>{{ $item['name'] }}</td>
+                            <td>{{ $item['email'] }}</td>
+                            <td>{{ ucfirst($item['role']) }}</td>
                             <td class="text-center">
-                                @if ($item->status == 'pending')
-                                    <span class="badge text-bg-warning">{{ $item->status }}</span>
-                                @elseif ($item->status == 'aktif')
-                                    <span class="badge text-bg-success">{{ $item->status }}</span>
-                                @elseif ($item->status == 'tolak')
-                                    <span class="badge text-bg-danger">{{ $item->status }}</span>
+                                @if ($item['status'] == 'pending')
+                                    <span class="badge text-bg-warning">{{ $item['status'] }}</span>
+                                @elseif ($item['status'] == 'aktif')
+                                    <span class="badge text-bg-success">{{ $item['status'] }}</span>
+                                @elseif ($item['status'] == 'tolak')
+                                    <span class="badge text-bg-danger">{{ $item['status'] }}</span>
                                 @endif
-                                <form action="{{ route('user.updateStatus', $item->id) }}" method="POST">
+                                <form action="{{ route('user.updateStatus', $item['id']) }}" method="POST">
                                     @csrf
                                     @method('PUT')
 
                                     <select name="status" onchange="this.form.submit()" class="form-control btn waves-effect waves-light btn-outline-primary">
-                                        <option value="pending" {{ $item->status === 'pending' ? 'selected' : '' }}>Pending</option>
-                                        <option value="aktif" {{ $item->status === 'aktif' ? 'selected' : '' }}>Aktif</option>
-                                        <option value="tolak" {{ $item->status === 'tolak' ? 'selected' : '' }}>Tolak</option>
+                                        <option value="pending" {{ $item['status'] === 'pending' ? 'selected' : '' }}>Pending</option>
+                                        <option value="aktif" {{ $item['status'] === 'aktif' ? 'selected' : '' }}>Aktif</option>
+                                        <option value="tolak" {{ $item['status'] === 'tolak' ? 'selected' : '' }}>Tolak</option>
                                     </select>
                                 </form>
                             </td>
                             <td>
-                                <a href="{{ route('user.edit', $item) }}" class="btn waves-effect waves-light btn-outline-primary"><i class="far fa-edit"></i></a>
-                                <form action="{{ route('user.destroy', $item) }}" method="POST" style="display:inline;">
+                                <a href="{{ route('user.edit', $item['id']) }}" class="btn waves-effect waves-light btn-outline-primary"><i class="far fa-edit"></i></a>
+                                <form action="{{ route('user.destroy', $item['id']) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button onclick="return confirm('Yakin ingin menghapus {{ $item->name }}?')" class="btn waves-effect waves-light btn-outline-danger"><i class="far fa-trash-alt"></i></button>
+                                    <button onclick="return confirm('Yakin ingin menghapus {{ $item['name'] }}?')" class="btn waves-effect waves-light btn-outline-danger"><i class="far fa-trash-alt"></i></button>
                                 </form>
                             </td>
                         </tr>

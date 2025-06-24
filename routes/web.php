@@ -52,7 +52,7 @@ Route::middleware(['auth', 'cek.role:admin,kasir'])->group(function (){
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('transaksi', TransaksiController::class);
     Route::get('/transaksi/{transaksi}/nota', [TransaksiController::class, 'cetakNota'])->name('transaksi.nota');
-    Route::get('cek', [TransaksiController::class, 'cek'])->name('cek');
+    Route::get('cek/{id}', [TransaksiController::class, 'cek'])->name('cek');
     Route::get('riwayat', [TransaksiController::class, 'riwayat'])->name('riwayat');
     Route::get('laporan', [LaporanController::class, 'laporan'])->name('laporan');
     Route::get('/laporan/pdf', [LaporanController::class, 'cetakPDF'])->name('laporan.pdf');

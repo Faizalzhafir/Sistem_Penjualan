@@ -24,13 +24,13 @@
                         <div class="card-body">
                             <h4 class="card-title">Form Edit Kategori</h4>
                             <h6 class="card-subtitle"><b>Perbarui data kategori dengan benar sebelum menyimpan</b></h6>
-                            <form action="{{ route('kategori.update', $kategori) }}" method="POST" enctype="multipart/form-data" class="mt-3 form-horizontal">
+                            <form action="{{ route('kategori.update', $kategori['id']) }}" method="POST" enctype="multipart/form-data" class="mt-3 form-horizontal">
                                 @csrf
                                 @method('PUT')
                                 <div class="form-group row">
                                     <label for="nama" class="col-sm-2 col-form-label">Nama Kategori</label>
                                     <div class="col-sm-10">
-                                        <input type="text" name="nama" class="form-control @error('nama') is-invalid @enderror" value="{{ old('nama', $kategori->nama) }}">
+                                        <input type="text" name="nama" class="form-control @error('nama') is-invalid @enderror" value="{{ old('nama', $kategori['nama']) }}">
                                         @error('nama')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror

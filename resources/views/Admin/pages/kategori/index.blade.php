@@ -43,13 +43,13 @@
                                     @foreach($kategori as $item)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $item->nama }}</td>
+                                        <td>{{ $item['nama'] }}</td>
                                         <td>
-                                            <a href="{{ route('kategori.edit', $item) }}" class="btn waves-effect waves-light btn-outline-primary"><i class="far fa-edit"></i></a>
-                                            <form action="{{ route('kategori.destroy', $item) }}" method="POST" style="display:inline;">
+                                            <a href="{{ route('kategori.edit', $item['id']) }}" class="btn waves-effect waves-light btn-outline-primary"><i class="far fa-edit"></i></a>
+                                            <form action="{{ route('kategori.destroy', $item['id']) }}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button onclick="return confirm('Apakah anda yakin ingin menghapus {{ $item->nama }} ?')" class="btn waves-effect waves-light btn-outline-danger"><i class="far fa-trash-alt"></i></button>
+                                                <button onclick="return confirm('Apakah anda yakin ingin menghapus {{ $item['nama'] }} ?')" class="btn waves-effect waves-light btn-outline-danger"><i class="far fa-trash-alt"></i></button>
                                             </form>
                                         </td>
                                     </tr>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Kategori;
+use Illuminate\Support\Facades\Http;
 
 class KategoriController extends Controller
 {
@@ -13,8 +14,14 @@ class KategoriController extends Controller
      */
     public function index()
     {
-        $kategori = Kategori::all();
-        return view('admin.pages.kategori.index', compact('kategori'));
+        $response = Http::get(config('app.api_url') . '/api/kategori');
+
+        if ($response->successful()) {
+            $kategori = $response->json()['data'];
+            return view('Admin.pages.kategori.index', compact('kategori'));
+        }
+    
+        return back()->with('error', 'Gagal memuat data kategori dari API');
     }
 
     /**
@@ -30,13 +37,29 @@ class KategoriController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
         $request->validate([
             'nama' => 'required|string|max:255|unique:tb_kategori,nama',
         ]);
 
-        Kategori::create($request->only('nama'));
+        // Kirim data ke API menggunakan HTTP client
+        $response = Http::timeout(10)->post(config('app.api_url') . '/api/kategori', [
+            'nama' => $request->nama
+        ]);
 
-        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil ditambahkan');
+        //dd($response->json());
+
+        if (!$response->successful()) {
+            dd($response->status(), $response->body());
+        }
+
+        if ($response->successful()) {
+            $data = $response->json();
+            return redirect()->route('kategori.index')
+                ->with('success', 'Kategori berhasil disimpan melalui API!');
+        } else {
+            return back()->with('error', 'Kategori gagal: ' . $response->body());
+        } 
     }
 
     /**
@@ -50,31 +73,60 @@ class KategoriController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Kategori $kategori)
+    public function edit($id)
     {
-        return view('admin.pages.kategori.edit', compact('kategori'));
+        $response = Http::get(config('app.api_url') . "/api/kategori/{$id}");
+
+        if ($response->successful()) {
+            $kategori = $response->json()['data'];
+            return view('admin.pages.kategori.edit', compact('kategori'));
+        }
+
+        return back()->with('error', 'Kategori tidak ditemukan.');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Kategori $kategori)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'nama' => 'required|string|max:255',
         ]);
 
-        $kategori->update($request->only('nama'));
+        // Kirim data ke API menggunakan HTTP client
+        $response = Http::timeout(10)->put(config('app.api_url') . "/api/kategori/{$id}", [
+            'nama' => $request->nama
+        ]);
 
-        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil diupdate');
+        //dd($response->json());
+
+        if (!$response->successful()) {
+            dd($response->status(), $response->body());
+        }
+
+        if ($response->successful()) {
+            $data = $response->json();
+            return redirect()->route('kategori.index')
+                ->with('success', 'Kategori berhasil diubah melalui API!');
+        } else {
+            return back()->with('error', 'Kategori gagal: ' . $response->body());
+        } 
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Kategori $kategori)
+    public function destroy($id)
     {
-        $kategori->delete();
-        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil dihapus');
+        $response = Http::delete(config('app.api_url') . "/api/kategori/{$id}");
+
+        if ($response->successful()) {
+            return redirect()->route('kategori.index')->with('success', 'Kategori berhasil dihapus.');
+        }
+        
+        //dd($response);
+
+        return back()->with('error', 'Gagal menghapus Kategori.');
     }
 }

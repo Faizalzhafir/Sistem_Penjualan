@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 
 class UserController extends Controller
 {
@@ -14,7 +15,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $response = Http::get(config('app.api_url') . '/api/user');
+        $users = $response->successful() ? $response->json()['data'] : [];
+
         return view('admin.pages.user.index', compact('users'));
     }
 
@@ -33,20 +36,18 @@ class UserController extends Controller
     {
         $validated = $request->validate([
             'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users,email',
+            'email'    => 'required|email',
             'password' => 'required|string|min:6',
             'role'     => 'required|in:admin,kasir,user',
         ]);
 
-        User::create([
-            'name'     => $validated['name'],
-            'email'    => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'role'     => $validated['role'],
-            'status'   => 'aktif'
-        ]);
+        $response = Http::post(config('app.api_url') . '/api/user', $validated);
 
-        return redirect()->route('user.index')->with('success', 'User berhasil ditambahkan');
+        if ($response->successful()) {
+            return redirect()->route('user.index')->with('success', 'User berhasil ditambahkan');
+        }
+
+        return back()->with('error', 'Gagal tambah user: ' . $response->body());
     }
 
     /**
@@ -60,53 +61,67 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit($id)
     {
-        return view('admin.pages.user.edit', compact('user'));
+        $response = Http::get(config('app.api_url') . "/api/user/{$id}");
+
+        if ($response->successful()) {
+            $user = $response->json()['data'];
+            return view('admin.pages.user.edit', compact('user'));
+        }
+
+        return back()->with('error', 'User tidak ditemukan.');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
         //dd($request->all());
         $validated = $request->validate([
             'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users,email,' . $user->id,
+            'email'    => 'required|email',
             'password' => 'nullable|string|min:6',
             'role'     => 'required|in:admin,kasir,user',
         ]);
 
-        $user->update([
-            'name'     => $validated['name'],
-            'email'    => $validated['email'],
-            'password' => $validated['password'] ? Hash::make($validated['password']) : $user->password,
-            'role'     => $validated['role'],
-            'status'   => $user->status
-        ]);
+        $data = $validated;
+        if (!$data['password']) unset($data['password']); // hapus kalau kosong
 
-        return redirect()->route('user.index')->with('success', 'User berhasil diperbarui');
+        $response = Http::put(config('app.api_url') . "/api/user/{$id}", $data);
+
+        if ($response->successful()) {
+            return redirect()->route('user.index')->with('success', 'User berhasil diperbarui');
+        }
+
+        return back()->with('error', 'Gagal update: ' . $response->body());
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        $user->delete();
-        return redirect()->route('user.index')->with('success', 'User berhasil dihapus');
+        $response = Http::delete(config('app.api_url') . "/api/user/{$id}");
+
+        if ($response->successful()) {
+            return redirect()->route('user.index')->with('success', 'User berhasil dihapus');
+        }
+
+        return back()->with('error', 'Gagal hapus user.');
     }
 
     public function updateStatus(Request $request, $id)
     {
-        $request->validate([
+        $validated = $request->validate([
             'status' => 'required|in:pending,aktif,tolak',
         ]);
-        $user = User::findOrFail($id);
-        $user->status = $request->status;
-        $user->save();
 
-        return back()->with('success', 'Status user berhasil di ubah');
+        $response = Http::patch(config('app.api_url') . "/api/user/{$id}/status", $validated);
+
+        return $response->successful()
+            ? back()->with('success', 'Status user berhasil diubah')
+            : back()->with('error', 'Gagal ubah status');
     }
 }

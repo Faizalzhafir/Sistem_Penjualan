@@ -19,7 +19,7 @@
 
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('user.update', $user) }}" method="POST" enctype="multipart/form-data" class="form-horizontal">
+            <form action="{{ route('user.update', $user['id']) }}" method="POST" enctype="multipart/form-data" class="form-horizontal">
                 <h4 class="card-title">Form Edit User</h4>
                 <h6 class="card-subtitle"><b>Perbarui data user dengan benar sebelum menyimpan</b></h6>
                 @csrf
@@ -28,7 +28,7 @@
                 <div class="form-group row mb-3">
                     <label class="col-sm-2 col-form-label">Nama</label>
                     <div class="col-sm-10">
-                        <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $user->name) }}" required>
+                        <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $user['name']) }}" required>
                         @error('name')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -38,7 +38,7 @@
                 <div class="form-group row mb-3">
                     <label class="col-sm-2 col-form-label">Email</label>
                     <div class="col-sm-10">
-                        <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email', $user->email) }}" required>
+                        <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email', $user['email']) }}" required>
                         @error('email')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -59,9 +59,9 @@
                     <label class="col-sm-2 col-form-label">Role</label>
                     <div class="col-sm-10">
                         <select name="role" class="form-control @error('role') is-invalid @enderror" required>
-                            <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>Admin</option>
-                            <option value="kasir" {{ old('role', $user->role) == 'kasir' ? 'selected' : '' }}>Kasir</option>
-                            <option value="user" {{ old('role', $user->role) == 'user' ? 'selected' : '' }}>User</option>
+                            <option value="admin" {{ old('role', $user['role']) == 'admin' ? 'selected' : '' }}>Admin</option>
+                            <option value="kasir" {{ old('role', $user['role']) == 'kasir' ? 'selected' : '' }}>Kasir</option>
+                            <option value="user" {{ old('role', $user['role']) == 'user' ? 'selected' : '' }}>User</option>
                         </select>
                         @error('role')
                             <div class="invalid-feedback">{{ $message }}</div>
