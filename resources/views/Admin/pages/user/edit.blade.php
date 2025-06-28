@@ -69,7 +69,8 @@
                     </div>
                 </div>
 
-                <button class="btn btn-primary mt-2">Simpan Perubahan</button>
+                <button class="btn btn-primary mt-2">Simpan</button>
+                <a href="{{ route('user.index') }}" class="btn btn-secondary mt-2">Batal</a>
             </form>
 
         </div>

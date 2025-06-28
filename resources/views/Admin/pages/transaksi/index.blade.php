@@ -337,6 +337,7 @@
         const diterima = document.getElementById('diterima').value;
         const total = document.getElementById('total').value;
         const metode_pembayaran = document.getElementById('metode_pembayaran').value;
+        const bayar = document.getElementById('bayar').value;
 
         // Validasi 'diterima' wajib diisi dan > 0
         if (total.trim() === '' || isNaN(total) || parseFloat(total) <= 0) {
@@ -347,6 +348,12 @@
         // Validasi 'diterima' wajib diisi dan > 0
         if (diterima.trim() === '' || isNaN(diterima) || parseFloat(diterima) <= 0) {
             alert('Mohon masukkan jumlah uang yang diterima (minimal lebih dari 0) sebelum menyimpan transaksi.');
+            return;
+        }
+
+        // Validasi 'diterima' wajib diisi dan > 0
+        if (diterima <  bayar) {
+            alert('Mohon masukkan jumlah uang diterima yang sesuai.');
             return;
         }
 

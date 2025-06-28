@@ -125,8 +125,8 @@
                                 </div>
                             </div>
 
-                            <button class="btn btn-primary mt-2">Update</button>
-                            <a href="{{ route('produk.index') }}" class="btn btn-secondary mt-2">Batal</a>
+                            <button class="btn btn-primary mt-2">Simpan</button>
+                            <a href="{{ route('produk-list.index') }}" class="btn btn-secondary mt-2">Batal</a>
                         </form>
 
                     </div>

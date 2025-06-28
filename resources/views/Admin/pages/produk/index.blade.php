@@ -27,7 +27,9 @@
                     <div class="card-body">
                         <h4 class="card-title">Daftar Produk</h4>
                         <h6 class="card-subtitle"><b></b>Menampilkan seluruh data produk dari berbagai kategori.</h6>
-                        <a href="{{ route('produk-list.create') }}" class="btn btn-primary mb-2">Tambah Produk</a>
+                        <div class="form-group">
+                            <a href="{{ route('produk-list.create') }}" class="btn btn-primary mb-2">Tambah Produk</a>
+                        </div>
                         <hr>
                             <div class="row">
                                 <form method="GET" action="{{ route('produk-list.index') }}">

@@ -49,7 +49,7 @@ class TransaksiController extends Controller
             'metode_pembayaran' => $request->metode_pembayaran,
         ]);
 
-        dd($response->json());
+        //dd($response->json());
 
         if ($response->successful()) {
             $data = $response->json();

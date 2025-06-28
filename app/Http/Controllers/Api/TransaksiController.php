@@ -47,7 +47,7 @@ class TransaksiController extends Controller
                 'diterima' => $request->diterima,
                 'jenis_transaksi' => $request->jenis_transaksi,
                 'metode_pembayaran' => $request->metode_pembayaran,
-                'status_pembayaran' => 'lunas',
+                'status_pembayaran' => $request->metode_pembayaran == 'cash' ? 'lunas' : 'pending'
             ]);
         
             // Simpan detail produk

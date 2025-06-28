@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Produk;
 use App\Models\Kategori;
 use Illuminate\Support\Facades\Http;
+use App\Imports\ProdukImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProdukController extends Controller
 {
@@ -187,5 +189,36 @@ class ProdukController extends Controller
         }
 
         return back()->with('error', 'Gagal menghapus produk.');
+    }
+
+    public function import(Request $request) {
+        $request->validate([
+            'file' => 'required|mimes:xls,xlsx'
+        ]);
+    
+        $import = new ProdukImport;
+    
+        try {
+            // Import langsung dari file upload, tidak perlu disimpan ke storage
+            Excel::import($import, $request->file('file'));
+        } catch (\Throwable $e) {
+            return redirect()->back()->with('error', 'Gagal impor: ' . $e->getMessage());
+        }
+    
+        $failures = $import->failures();
+        \Log::info('Cek failures:', $failures->toArray());
+    
+        if ($failures->isNotEmpty()) {
+            return redirect()->back()->with([
+                'error' => 'Terdapat kesalahan pada beberapa baris Excel.',
+                'failures' => $failures,
+            ]);
+        }
+
+        return redirect()->route('produk-list.index')->with('success', 'Data produk berhasil diimpor');
+    }
+
+    public function produkTemplate() {
+        return Excel::download(new \App\Exports\ProdukTemplate, 'Template_Produk.xlsx');
     }
 }

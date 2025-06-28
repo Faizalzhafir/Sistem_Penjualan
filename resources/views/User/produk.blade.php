@@ -82,12 +82,12 @@
                                                 <img src="{{ asset('storage/produk/' . $item->image) }}" alt="{{ $item->nama }}" class="img-fluid w-100 rounded-top">
                                             @endif
                                         </div>
-                                        <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
+                                        <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">{{ $item->kategori->nama }}</div>
                                         <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                                             <h4>{{ $item->nama }}</h4>
                                             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
                                             <div class="d-flex justify-content-between flex-lg-wrap">
-                                                <p class="text-dark fs-5 fw-bold mb-0">{{ $item->harga_jual }}</p>
+                                                <p class="text-dark fs-5 fw-bold mb-0">Rp {{ number_format($item['harga_jual'], 0, ',', '.') }}</p>
                                                 <!-- Tombol Keranjang -->
                                                 @if(Auth::check())
                                                 <form action="{{ route('keranjang.store') }}" method="POST">

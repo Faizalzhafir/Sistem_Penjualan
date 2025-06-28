@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Kategori;
 use Illuminate\Support\Facades\Http;
+use App\Imports\KategoriImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class KategoriController extends Controller
 {
@@ -128,5 +130,36 @@ class KategoriController extends Controller
         //dd($response);
 
         return back()->with('error', 'Gagal menghapus Kategori.');
+    }
+
+    public function import(Request $request) {
+        //dd($request->all());
+        $request->validate([
+            'file' => 'required|mimes:xls,xlsx'
+        ]);
+    
+        $import = new KategoriImport;
+    
+        try {
+            // Import langsung dari file upload, tidak perlu disimpan ke storage
+            Excel::import($import, $request->file('file'));
+        } catch (\Throwable $e) {
+            return redirect()->back()->with('error', 'Gagal impor: ' . $e->getMessage());
+        }
+    
+        $failures = $import->failures();
+    
+        if ($failures->isNotEmpty()) {
+            return redirect()->back()->with([
+                'error' => 'Terdapat kesalahan pada beberapa baris Excel.',
+                'failures' => $failures,
+            ]);
+        }
+
+        return redirect()->route('kategori.index')->with('success', 'Data kategori berhasil diimpor');
+    }
+
+    public function kategoriTemplate() {
+        return Excel::download(new \App\Exports\KategoriTemplate, 'Template_Kategori.xlsx');
     }
 }

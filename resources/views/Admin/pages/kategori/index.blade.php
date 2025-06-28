@@ -28,7 +28,9 @@
                     <div class="card-body">
                         <h4 class="card-title">Daftar Kategori</h4>
                         <h6 class="card-subtitle"><b>Menampilkan seluruh data berbagai kategori.</b></h6>
-                        <a href="{{ route('kategori.create') }}" class="btn btn-primary mb-2">Tambah Kategori</a>
+                        <div class="form-group">
+                            <a href="{{ route('kategori.create') }}" class="btn btn-primary mb-2">Tambah Kategori</a>
+                        </div>
                         <div class="table-responsive">
                             <table id="zero_config"
                                 class="table border table-striped table-bordered text-nowrap" style="width:100%">

@@ -36,7 +36,8 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <button class="btn btn-primary mt-2">Update</button>
+                                <button class="btn btn-primary mt-2">Simpan</button>
+                                <a href="{{ route('kategori.index') }}" class="btn btn-secondary mt-2">Batal</a>
                             </form>
                         </div>
                 </div>

@@ -6,11 +6,13 @@
     <h4 class="page-title text-dark font-weight-medium mb-1">Riwayat Transaksi</h4>
     @endsection
 
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
+    
     <div class="container-fluid">
+        @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+
+        
         <div class="row">
             <div class="col-sm-6 col-lg-4">
                 <div class="card border-end bg-dark">
@@ -40,7 +42,7 @@
                                 <div class="d-inline-flex align-items-center">
                                     <h2 class="text-white mb-1 font-weight-medium">{{ $pending }}</h2>
                                         <span
-                                            class="badge bg-primary font-12 text-white font-weight-medium rounded-pill ms-2 d-lg-block d-md-none">Metode</span>
+                                            class="badge bg-primary font-12 text-white font-weight-medium rounded-pill ms-2 d-lg-block d-md-none">Status</span>
                                         </div>
                                     <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Pending
                                     </h6>
@@ -118,11 +120,15 @@
                                             <div class="dropdown-menu">
                                                 <a class="text-primary dropdown-item" href="{{ route('transaksi.show', $item) }}"><i data-feather="eye"></i> Lihat Detail</a>
                                                 <div class="dropdown-divider"></div>
+                                                @if (auth()->user()->role === 'admin')
                                                 <form action="{{ route('transaksi.destroy', $item) }}" method="post">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button class="text-primary dropdown-item" onclick="return confirm('Yakin ingin menghapus transaksi ini?')"><i data-feather="trash"></i> Hapus Data</button>
                                                 </form>
+                                                @else
+                                                    
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>

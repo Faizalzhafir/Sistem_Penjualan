@@ -2,6 +2,21 @@
 
 @section('content')
 <div class="container">
+    @if (session('failures'))   
+        <div class="alert alert-danger">
+            <strong>{{ session('error') }}</strong>
+            <ul>
+                @foreach (session('failures') as $failure)
+                    <li>
+                        Baris {{ $failure->row() }}:
+                        @foreach ($failure->errors() as $error)
+                            {{ $error }}<br>
+                        @endforeach
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     @section('title')
     <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Tambah Produk</h4>
     @endsection
@@ -24,7 +39,35 @@
                     <div class="card-body">
                         <h4 class="card-title">Form Tambah Produk</h4>
                         <h6 class="card-subtitle">Lengkapi data produk dengan benar sebelum menyimpan</h6>
-                        
+                        <div class="modal fade" id="centermodal" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-success">
+                                        <h4 class="modal-title text-white" id="myCenterModalLabel">Upload File Import Produk</h4>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{{ route('produk-list.import') }}" method="post" enctype="multipart/form-data">
+                                            @csrf
+                                            <div class="form-group row">
+                                                <label for="file" class="col-sm-2 col-form-label">File</label>
+                                                    <div class="col-sm-10">
+                                                        <input  id="file" type="file" name="file" class="form-control mb-2" required>
+                                                        <h6 class="card-subtitle">Masukkan file dengan format<code>.xlx atau .xlsx</code>
+                                                    </div>
+                                                </div>
+                                                <div class="text-end mt-2">
+                                                    <button type="submit" class="btn btn-success mb-2">Upload</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div>
+                        <div class="form-group text-end">
+                            <a href="{{ route('produk-list.template') }}" class="btn btn-success mb-2">Unduh Template</a>
+                            <button href="{{ route('produk-list.import') }}" data-bs-toggle="modal" data-bs-target="#centermodal" class="btn btn-outline-success mb-2">Import Produk</button>
                         <form action="{{ route('produk-list.store') }}" method="POST" class="mt-3 form-horizontal" enctype="multipart/form-data">
                             @csrf
 

@@ -57,8 +57,12 @@ Route::middleware(['auth', 'cek.role:admin,kasir'])->group(function (){
     Route::get('/laporan/export-excel', [LaporanController::class, 'exportExcel'])->name('laporan.export.excel');
 });
 Route::middleware(['auth', 'cek.role:admin'])->group(function (){
+    Route::get('kategori/template', [KategoriController::class, 'kategoriTemplate'])->name('kategori.template');
     Route::resource('kategori', KategoriController::class);
+    Route::post('kategori-import', [KategoriController::class, 'import'])->name('kategori.import');
+    Route::get('produk-list/template', [ProdukController::class, 'produkTemplate'])->name('produk-list.template');
     Route::resource('produk-list', ProdukController::class);
+    Route::post('produk-list-import', [ProdukController::class, 'import'])->name('produk-list.import');
     Route::resource('user', UserController::class);
     Route::put('/user/{id}/status', [UserController::class, 'updateStatus'])->name('user.updateStatus');
     Route::resource('settings', SettingController::class);

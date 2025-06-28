@@ -88,6 +88,6 @@ class LaporanController extends Controller
         $tanggal_awal = $request->tanggal_awal;
         $tanggal_akhir = $request->tanggal_akhir;
 
-        return Excel::download(new TransaksiExport, 'laporan-transaksi.xlsx');
+        return Excel::download(new TransaksiExport, 'Laporan-Transaksi.xlsx');
     }
 }
