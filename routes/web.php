@@ -11,7 +11,9 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\Auth\LoginController as AuthLoginController;
 use App\Http\Controllers\Auth\RegisterController as AuthRegisterController;
+use App\Http\Controllers\User\ContactController;
 use App\Http\Controllers\User\KeranjangController;
+use App\Http\Controllers\User\LandingpageController;
 use App\Http\Controllers\User\ProdukController as UserProdukController;
 
 /*
@@ -29,13 +31,7 @@ use App\Http\Controllers\User\ProdukController as UserProdukController;
 Route::get('/user/dashboard', function () {
     return view('welcome');
 })->name('user.dashboard');
-Route::get('/', function () {
-    return view('user.index');
-});
 
-Route::get('/kontak', function () {
-    return view('user.contact');
-});
 Route::get('/logout', function () {
     Auth::logout();
     return redirect('/');
@@ -43,10 +39,12 @@ Route::get('/logout', function () {
 Route::resource('login', AuthLoginController::class);
 Route::resource('register', AuthRegisterController::class);
 Route::resource('produk', UserProdukController::class);
+Route::resource('/', LandingpageController::class);
 
 
 Route::middleware(['auth', 'cek.role:user'])->group(function (){
     Route::resource('keranjang', KeranjangController::class);
+    Route::resource('kontak', ContactController::class);
 });
 Route::middleware(['auth', 'cek.role:admin,kasir'])->group(function (){
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');

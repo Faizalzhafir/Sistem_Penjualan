@@ -12,7 +12,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Form Setting</h4>
-                        <h6 class="card-subtitle">Lengkapi data produk dengan benar sebelum menyimpan</h6>
+                        <h6 class="card-subtitle">Lengkapi data dengan benar sebelum menyimpan</h6>
                         
                         <form action="{{ route('settings.store') }}" method="post" enctype="multipart/form-data">
                             @csrf

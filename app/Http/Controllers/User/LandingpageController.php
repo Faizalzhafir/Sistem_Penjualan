@@ -3,27 +3,18 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\Kategori;
-use App\Models\Produk;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 
-class ProdukController extends Controller
+class LandingpageController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $kategoriId = $request->query('kategori');
-        if($kategoriId) {
-            $produk = Produk::where('kategori_id', $kategoriId)->get();
-        } else {
-            $produk = Produk::all();
-        }
-        $kategori = Kategori::withCount('produk')->get();
         $setting = Setting::first();
-        return view('User.produk', compact('produk','kategori','setting'));
+        return view('User.index', compact('setting'));
     }
 
     /**

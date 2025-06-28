@@ -8,45 +8,22 @@
       <!-- Spinner End -->
 
 
-
-      <!-- Modal Search Start -->
-      <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-fullscreen">
-              <div class="modal-content rounded-0">
-                  <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLabel">Search by keyword</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body d-flex align-items-center">
-                      <div class="input-group w-75 mx-auto d-flex">
-                          <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
-                          <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <!-- Modal Search End -->
-
-
       <!-- Hero Start -->
-      <div class="container-fluid py-5 mb-5 hero-header">
+      <div class="container-fluid py-5 mb-5 hero-header bg-transparent">
           <div class="container py-5">
               <div class="row g-5 align-items-center">
                   <div class="col-md-12 col-lg-7">
-                    <h4 class="mb-3 text-secondary">Selamat datang di</h4>
-                      <h1 class="mb-5 display-3 text-primary">Toko kelontong makmur</h1>
+                    <h4 class="mb-3 ">Selamat datang di</h4>
+                      <h1 class="mb-5 display-3 ">{{ $setting->nama_toko }}</h1>
                   </div>
                   <div class="col-md-12 col-lg-5">
                       <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
                           <div class="carousel-inner" role="listbox">
                               <div class="carousel-item active rounded">
-                                  <img src="img/hero-img-1.png" class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide">
-                                  <a href="#" class="btn px-4 py-2 text-white rounded">Fruites</a>
+                                  <img src="img/warung1.webp" class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide">
                               </div>
                               <div class="carousel-item rounded">
-                                  <img src="img/hero-img-2.jpg" class="img-fluid w-100 h-100 rounded" alt="Second slide">
-                                  <a href="#" class="btn px-4 py-2 text-white rounded">Vesitables</a>
+                                  <img src="img/warung1.webp" class="img-fluid w-100 h-100 rounded" alt="Second slide">
                               </div>
                           </div>
                           <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
@@ -122,7 +99,7 @@
         <div class="row align-items-center">
           <!-- Gambar Toko -->
           <div class="col-lg-6 mb-4 mb-lg-0 position-relative">
-            <img src="img/fruite-item-5.jpg" alt="Toko SRC" class="img-fluid rounded shadow" style="z-index: 2; position: relative;">
+            <img src="img/warung2.jpg" alt="Toko SRC" class="img-fluid rounded shadow" style="z-index: 2; position: relative;">
             <!-- Ornamen background -->
             <div class="position-absolute top-50 start-0 translate-middle-y" style="z-index: 1;">
               <img src="ornamen.png" alt="" class="img-fluid" style="max-width: 150px; opacity: 0.3;">
@@ -158,22 +135,22 @@
 
             <!-- Gambar 1 -->
             <div class="col-sm-6 col-md-4 col-lg-3">
-            <img src="img/fruite-item-2.jpg" alt="Toko 1" class="img-fluid rounded gallery-img">
+            <img src="img/warung2.jpg" alt="Toko 1" class="img-fluid rounded gallery-img">
             </div>
 
             <!-- Gambar 2 -->
             <div class="col-sm-6 col-md-4 col-lg-3">
-            <img src="img/fruite-item-2.jpg" alt="Toko 2" class="img-fluid rounded gallery-img">
+            <img src="img/warung5.jpeg" alt="Toko 2" class="img-fluid rounded gallery-img">
             </div>
 
             <!-- Gambar 3 -->
             <div class="col-sm-6 col-md-4 col-lg-3">
-            <img src="img/fruite-item-2.jpg" alt="Toko 3" class="img-fluid rounded gallery-img">
+            <img src="img/warung3.jpg" alt="Toko 3" class="img-fluid rounded gallery-img">
             </div>
 
             <!-- Gambar 4 -->
             <div class="col-sm-6 col-md-4 col-lg-3">
-            <img src="img/fruite-item-2.jpg" alt="Toko 4" class="img-fluid rounded gallery-img">
+            <img src="img/warung4.jpg" alt="Toko 4" class="img-fluid rounded gallery-img">
             </div>
 
         </div>

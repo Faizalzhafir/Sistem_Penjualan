@@ -51,7 +51,7 @@ class SettingController extends Controller
            // Cek dan simpan logo baru jika ada
             if ($request->hasFile('logo')) {
                 // Hapus logo lama jika ada
-                if ($setting->logo && Storage::disk('public')->exists($setting->logo)) {
+                if ($setting && $setting->logo && Storage::disk('public')->exists($setting->logo)) {
                     Storage::disk('public')->delete($setting->logo);
                 }
                 // Simpan logo baru

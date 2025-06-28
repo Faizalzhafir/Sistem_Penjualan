@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Keranjang;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,8 +15,9 @@ class KeranjangController extends Controller
      */
     public function index()
     {
+        $setting = Setting::first();
         $keranjang = Keranjang::with('produk')->get();
-        return view('User.keranjang', compact('keranjang'));
+        return view('User.keranjang', compact('keranjang', 'setting'));
     }
 
     /**

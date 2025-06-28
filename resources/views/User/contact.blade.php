@@ -3,11 +3,10 @@
 @section('content')
 <!-- Single Page Header start -->
         <div class="container-fluid page-header py-5">
-          <h1 class="text-center text-white display-6">Contact</h1>
+          <h1 class="text-center text-white display-6">Kontak</h1>
           <ol class="breadcrumb justify-content-center mb-0">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item"><a href="#">Pages</a></li>
-              <li class="breadcrumb-item active text-white">Contact</li>
+              <li class="breadcrumb-item"><a href="{{ url('/') }}">Beranda</a></li>
+              <li class="breadcrumb-item active text-white">Kontak</li>
           </ol>
       </div>
       <!-- Single Page Header End -->
@@ -20,8 +19,8 @@
                   <div class="row g-4">
                       <div class="col-12">
                           <div class="text-center mx-auto" style="max-width: 700px;">
-                              <h1 class="text-primary">Get in touch</h1>
-                              <p class="mb-4">The contact form is currently inactive. Get a functional and working contact form with Ajax & PHP in a few minutes. Just copy and paste the files, add a little code and you're done. <a href="https://htmlcodex.com/contact-form">Download Now</a>.</p>
+                              <h1 class="text-primary">Kami siap membantu</h1>
+                              <p class="mb-4">Isi formulir di bawah ini untuk menghubungi kami/chat kami dengan nomor di bawah. Kami akan segera merespon pesan anda.</p>
                           </div>
                       </div>
                       <div class="col-lg-12">
@@ -32,33 +31,34 @@
                           </div>
                       </div>
                       <div class="col-lg-7">
-                          <form action="" class="">
-                              <input type="text" class="w-100 form-control border-0 py-3 mb-4" placeholder="Your Name">
-                              <input type="email" class="w-100 form-control border-0 py-3 mb-4" placeholder="Enter Your Email">
-                              <textarea class="w-100 form-control border-0 mb-4" rows="5" cols="10" placeholder="Your Message"></textarea>
-                              <button class="w-100 btn form-control border-secondary py-3 bg-white text-primary " type="submit">Submit</button>
+                          <form action="{{ route('kontak.store') }}" method="POST" class="">
+                            @csrf
+                              <input type="text" name="alamat" class="w-100 form-control border-0 py-3 mb-4" placeholder="Alamat">
+                              <input type="number" name="no_whatsapp" class="w-100 form-control border-0 py-3 mb-4" placeholder="No Whatsapp">
+                              <textarea class="w-100 form-control border-0 mb-4" name="pesan" rows="5" cols="10" placeholder="Pesan"></textarea>
+                              <button class="w-100 btn form-control border-secondary py-3 bg-white text-primary " type="submit">Kirim</button>
                           </form>
                       </div>
                       <div class="col-lg-5">
                           <div class="d-flex p-4 rounded mb-4 bg-white">
                               <i class="fas fa-map-marker-alt fa-2x text-primary me-4"></i>
                               <div>
-                                  <h4>Address</h4>
-                                  <p class="mb-2">123 Street New York.USA</p>
+                                  <h4>Alamat</h4>
+                                  <p class="mb-2">{{ $setting->alamat }}</p>
                               </div>
                           </div>
                           <div class="d-flex p-4 rounded mb-4 bg-white">
                               <i class="fas fa-envelope fa-2x text-primary me-4"></i>
                               <div>
-                                  <h4>Mail Us</h4>
-                                  <p class="mb-2">info@example.com</p>
+                                  <h4>Email</h4>
+                                  <p class="mb-2">{{ $setting->email }}</p>
                               </div>
                           </div>
                           <div class="d-flex p-4 rounded bg-white">
                               <i class="fa fa-phone-alt fa-2x text-primary me-4"></i>
                               <div>
-                                  <h4>Telephone</h4>
-                                  <p class="mb-2">(+012) 3456 7890</p>
+                                  <h4>No Telpon</h4>
+                                  <p class="mb-2">{{ $setting->telepon }}</p>
                               </div>
                           </div>
                       </div>

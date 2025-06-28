@@ -2,21 +2,20 @@
         <div class="container-fluid fixed-top">
           <div class="container px-0">
               <nav class=" navbar navbar-light bg-white navbar-expand-xl">
-                  <a href="index.html" class="navbar-brand"><h1 class="text-primary display-6">Fruitables</h1></a>
+                  <a href="index.html" class="navbar-brand"><h1 class="text-primary display-6">{{ $setting->nama_toko }}</h1></a>
                   <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                       <span class="fa fa-bars text-primary"></span>
                   </button>
                   <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                       <div class="navbar-nav mx-auto">
                           @guest
-                          <a href="{{ url('/') }}" class="nav-item nav-link active">Beranda</a>
-                          <a href="{{ url('produk') }}" class="nav-item nav-link">Produk</a>
-                          <a href="{{ url('kontak') }}" class="nav-item nav-link">Kontak</a>
+                          <a href="{{ url('/') }}" class="nav-item nav-link {{ request()->is('/') ? 'active' : ''}}">Beranda</a>
+                          <a href="{{ url('produk') }}" class="nav-item nav-link {{ request()->is('produk') ? 'active' : ''}}">Produk</a>
                           @else
-                          <a href="{{ url('/') }}" class="nav-item nav-link active">Beranda</a>
-                          <a href="{{ url('produk') }}" class="nav-item nav-link">Produk</a>
-                          <a href="{{ route('keranjang.index') }}" class="nav-item nav-link">Keranjang</a>
-                          <a href="{{ url('kontak') }}" class="nav-item nav-link">Kontak</a>
+                          <a href="{{ url('/') }}" class="nav-item nav-link {{ request()->is('/') ? 'active' : ''}}">Beranda</a>
+                          <a href="{{ url('produk') }}" class="nav-item nav-link {{ request()->is('produk') ? 'active' : ''}}">Produk</a>
+                          <a href="{{ route('keranjang.index') }}" class="nav-item nav-link {{ request()->is('keranjang') ? 'active' : ''}}">Keranjang</a>
+                          <a href="{{ url('kontak') }}" class="nav-item nav-link {{ request()->is('kontak') ? 'active' : ''}}">Kontak</a>
                           @endguest
                       </div>
                       <div class="d-flex m-3 me-0">
