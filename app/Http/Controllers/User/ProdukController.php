@@ -16,15 +16,26 @@ class ProdukController extends Controller
     public function index(Request $request)
     {
         $kategoriId = $request->query('kategori');
-        if($kategoriId) {
-            $produk = Produk::where('kategori_id', $kategoriId)->get();
+        if ($kategoriId) {
+            $produk = Produk::where('kategori_id', $kategoriId)->paginate(10);
         } else {
-            $produk = Produk::all();
+            $produk = Produk::paginate(10);
         }
         $kategori = Kategori::withCount('produk')->get();
         $setting = Setting::first();
         return view('User.produk', compact('produk','kategori','setting'));
     }
+    public function cari(Request $request)
+    {
+        $keyword = $request->keyword;
+
+        $produk = Produk::where('nama', 'like', "%{$keyword}%")->paginate(9);
+    
+        $kategori = Kategori::withCount('produk')->get();
+        $setting = Setting::first();
+    
+        return view('User.produk', compact('produk', 'kategori', 'setting'));
+    }  
 
     /**
      * Show the form for creating a new resource.
@@ -73,4 +84,5 @@ class ProdukController extends Controller
     {
         //
     }
+  
 }

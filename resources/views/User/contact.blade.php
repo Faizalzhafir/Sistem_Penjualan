@@ -44,21 +44,21 @@
                               <i class="fas fa-map-marker-alt fa-2x text-primary me-4"></i>
                               <div>
                                   <h4>Alamat</h4>
-                                  <p class="mb-2">{{ $setting->alamat }}</p>
+                                  <p class="mb-2">{{ $setting->alamat ?? '' }}</p>
                               </div>
                           </div>
                           <div class="d-flex p-4 rounded mb-4 bg-white">
                               <i class="fas fa-envelope fa-2x text-primary me-4"></i>
                               <div>
                                   <h4>Email</h4>
-                                  <p class="mb-2">{{ $setting->email }}</p>
+                                  <p class="mb-2">{{ $setting->email ?? ''}}</p>
                               </div>
                           </div>
                           <div class="d-flex p-4 rounded bg-white">
                               <i class="fa fa-phone-alt fa-2x text-primary me-4"></i>
                               <div>
                                   <h4>No Telpon</h4>
-                                  <p class="mb-2">{{ $setting->telepon }}</p>
+                                  <p class="mb-2">{{ $setting->telepon ?? ''}}</p>
                               </div>
                           </div>
                       </div>

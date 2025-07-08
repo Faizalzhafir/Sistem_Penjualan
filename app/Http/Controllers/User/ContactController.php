@@ -14,8 +14,7 @@ class ContactController extends Controller
      */
     public function index()
     {
-        $setting = Setting::first();
-        return view('User.contact', compact('setting'));
+       
     }
 
     /**
@@ -23,7 +22,8 @@ class ContactController extends Controller
      */
     public function create()
     {
-        //
+        $setting = Setting::first();
+        return view('User.contact', compact('setting'));
     }
 
     /**

@@ -14,8 +14,8 @@
   
       <div class="d-flex justify-content-between flex-wrap">
         <div class="footer-item me-3" style="flex: 1;">
-          <h4 class="text-light mb-3">Alamat Toko {{ $setting->nama_toko }}</h4>
-          <p class="mb-4">{{ $setting->alamat }}</p>
+          <h4 class="text-light mb-3">Alamat Toko {{ $setting->nama_toko ?? '' }}</h4>
+          <p class="mb-4">{{ $setting->alamat ?? ''}}</p>
         </div>
       
         <div class="footer-item mx-3 text-start" style="flex: 1;">
@@ -28,8 +28,8 @@
       
         <div class="footer-item ms-3" style="flex: 1;">
           <h4 class="text-light mb-3">Kontak</h4>
-          <p>Email: {{ $setting->email }}</p>
-          <p>No Telp: {{ $setting->telepon }}</p>
+          <p>Email: {{ $setting->email ?? ''}}</p>
+          <p>No Telp: {{ $setting->telepon ?? ''}}</p>
           <p>Payment Accepted</p>
           <img src="img/payment.png" class="img-fluid" alt="">
         </div>

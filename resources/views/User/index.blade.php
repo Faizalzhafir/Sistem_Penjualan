@@ -14,7 +14,7 @@
               <div class="row g-5 align-items-center">
                   <div class="col-md-12 col-lg-7">
                     <h4 class="mb-3 ">Selamat datang di</h4>
-                      <h1 class="mb-5 display-3 ">{{ $setting->nama_toko }}</h1>
+                      <h1 class="mb-5 display-3 ">{{ $setting->nama_toko ?? '' }}</h1>
                   </div>
                   <div class="col-md-12 col-lg-5">
                       <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">

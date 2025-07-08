@@ -39,6 +39,7 @@ Route::get('/logout', function () {
 Route::resource('login', AuthLoginController::class);
 Route::resource('register', AuthRegisterController::class);
 Route::resource('produk', UserProdukController::class);
+Route::get('produk/cari', [UserProdukController::class, 'cari'])->name('produk.cari');
 Route::resource('/', LandingpageController::class);
 
 
